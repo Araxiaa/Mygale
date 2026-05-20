@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petite Mygale — Fiche Interactive</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="spider-corner top-left"></div>
+    <div class="spider-corner top-right"></div>
+    <div class="spider-web-center"></div>
+
+    <div class="sheet-container">
+        
+        <aside class="sidebar">
+            <div class="spider-hanging">
+                <svg viewBox="0 0 24 24"><path d="M12 2v6M9 11a3 3 0 1 1 6 0 3 3 0 0 1-6 0m-3 0h3m6 0h3M5 7l3 2m8-2-3 2M4 16l4-2m12 2-4-2M6 21l3-4m9 4-3-4" stroke="#b91c1c" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
+            </div>
+
+            <div class="character-title">
+                <h1>Petite Mygale</h1>
+                <div class="subtitle">Clan du Vent</div>
+            </div>
+
+            <div class="quick-info-box">
+                <div class="info-line"><span>Rang</span> <strong>Chaton</strong></div>
+                <div class="info-line"><span>Âge</span> <strong>3 lunes</strong></div>
+                <div class="info-line"><span>Sexe</span> <strong>Femelle</strong></div>
+                <div class="info-line"><span>Orientation</span> <strong>Pansexuelle</strong></div>
+                <div class="info-line"><span>Santé (PV)</span> <strong class="stat-highlight">10 / 10</strong></div>
+                <div class="info-line"><span>Énergie (PA)</span> <strong class="stat-highlight">2 / 2</strong></div>
+            </div>
+
+            <nav class="nav-tabs">
+                <button class="tab-btn" onclick="openTab(event, 'profil')">Nomenclature</button>
+                <button class="tab-btn" onclick="openTab(event, 'caractere')">Personnalité</button>
+                <button class="tab-btn" onclick="openTab(event, 'apparence')">Apparence</button>
+                <button class="tab-btn" onclick="openTab(event, 'histoire')">Histoire</button>
+                <button class="tab-btn" onclick="openTab(event, 'genealogie')">Généalogie</button>
+                <button class="tab-btn active" onclick="openTab(event, 'relations')">Relations</button>
+                <button class="tab-btn" onclick="openTab(event, 'galerie')">Galerie d'Art</button>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+
+            <section id="profil" class="content-section">
+                <h2>Nomenclature</h2>
+                <div class="nomenclature-container">
+                    <div class="name-block">
+                        <div class="name-header">
+                            <span class="arrow">➜</span> <h3>Nom de Chaton : <span>Petite Mygale</span></h3>
+                        </div>
+                        <div class="sub-comment">0 à 6 lunes — [Date : ... à ... ]</div>
+                        <div class="quote-box">
+                            Ce nom lui a été donné fugacement par sa mère, dans ses derniers instants, avant qu'elle ne s'en aille. Un nom étrange, au premier abord. Presque repoussant. La mygale n'est pas une créature qu'on admire, elle inquiète, elle dérange, elle fait un pas en arrière à ceux qui la croisent. Et pourtant. Elle est redoutable, précise, dangereuse bien au-delà de ce que sa taille laisse supposer. Ce nom, Éclat de Scarabée ne l'a pas choisi par tendresse immédiate, plutôt comme une vérité qu'elle avait vue, en deux lunes, dans les yeux de sa fille. Quelque chose qui ne se laisse pas apprivoiser facilement. Quelque chose qui morde, si on ne fait pas attention. Un nom qui commence comme un défaut, et qui finit comme une promesse.
+                        </div>
+                    </div>
+                    <div class="name-block">
+                        <div class="name-header">
+                            <span class="arrow">➜</span> <h3>Nom d'Apprenti : <span>Nuage de Mygale</span></h3>
+                        </div>
+                        <div class="sub-comment">6 à 12 lunes — [Date : ... à ... ]</div>
+                    </div>
+                    <div class="name-block">
+                        <div class="name-header">
+                            <span class="arrow">➜</span> <h3>Nom Adulte : <span>Le meneur va choisir</span></h3>
+                        </div>
+                        <div class="sub-comment">12 à ... lunes — [Date : ... à ... ]</div>
+                        <div class="context-comment">En fonction du choix du meneur.</div>
+                    </div>
+                    <div class="name-block">
+                        <div class="name-header">
+                            <span class="arrow">➜</span> <h3>Nom de Chef : <span>Étoile de Mygale</span></h3>
+                        </div>
+                        <div class="sub-comment">... à ... lunes — [Date : ... à ... ]</div>
+                    </div>
+                    <div class="name-block">
+                        <div class="name-header">
+                            <span class="arrow">➜</span> <h3>Nom d'Ancien : <span>Identique ou modifié</span></h3>
+                        </div>
+                        <div class="sub-comment">... à ... lunes — [Date : ... à ... ]</div>
+                        <div class="context-comment">Seulement si son nom change, sinon c’est le même qu’en tant que guerrière.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="caractere" class="content-section">
+                <h2>Caractère & Personnalité</h2>
+                <div class="global-desc-box">
+                    <p><strong>Petite Mygale est une contradiction vivante.</strong> Elle veut aller vers les autres, apprendre d'eux, les comprendre, et pourtant, elle maintient toujours ce petit pas en arrière, cette distance imperceptible que peu arrivent à franchir. C'est peut-être ce qui la définit le mieux : une féline qui aspire à la connexion, mais qui a appris, très tôt, que les choses qu'on aime finissent toujours par disparaître.</p>
+                    <p>Curieuse, parfois indiscrète, elle compense à sa façon le silence que sa mère a laissé derrière elle. Chaque réponse qu'on lui donne, chaque histoire qu'on accepte de lui raconter, est une petite pierre qu'elle pose pour reconstruire ce qu'elle n'a jamais eu. Elle apprécie qu'on lui réponde, même aux questions les plus naïves, surtout celles-là. Et sans le chercher, elle attire les regards. Quelque chose en elle retient l'œil, fascine, sans qu'elle fasse le moindre effort. Un port naturel, une façon d'exister dans un espace. Elle s'en accommode, même si ça la met mal à l'aise.</p>
+                    <p>Mais derrière ce charisme discret se cache une féline qui ne se livre pas facilement. Méfiante, profondément convaincue que la loyauté se mérite plutôt qu'elle ne se donne, elle observe bien plus qu'elle ne parle. Ce qu'elle traverse, elle préfère le porter seule, et quand quelque chose ne va pas, elle se referme, disparaît dans son propre silence. Partager, pour elle, ressemble encore trop à une faiblesse.</p>
+                    <p>Ce qui ne l'empêche pas d'être traversée, malgré elle, par des émotions qui la débordent avant même qu'elle ait eu le temps de les contenir. C'est ce qu'elle déteste le plus chez elle. Cette incapacité à rester de marbre, à garder la face en toutes circonstances. Elle essaie, pourtant. Elle essaie toujours.</p>
+                    <p>Et quand elle décide quelque chose, rien ni personne ne la fera dévier. Têtue jusqu'à l'os, capable d'aller jusqu'au bout de ses idées qu'importe les obstacles, c'est à la fois ce qui la fait avancer, et ce qui, parfois, la perd.</p>
+                    <p>Au fond, Petite Mygale est une survivante. Pas par choix, pas par fierté, juste parce que c'est ce qu'on lui a appris, dans un clan qui a lui-même appris à vivre avec rien. Elle ne s'effondre pas. Ou du moins, pas devant les autres. Et peu importe ce que la vie met en travers de son chemin, elle trouve toujours un moyen de s'en sortir. Même quand ce moyen n'est pas beau à voir.</p>
+                </div>
+
+                <div class="spider-divider"></div>
+
+                <div class="accordion-container">
+                    <div class="accordion-item">
+                        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                            <span>➜ <strong>Qualités</strong></span>
+                            <span class="icon-status">+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <ul class="trait-list-v2">
+                               <li><h4>Curieuse</h4><p>N'ayant pas de mère pour lui raconter des histoires, répondre à ses questions, combler les silences... C'est sa façon à elle de reconstruire ce qu'elle n'a jamais eu.</p></li>
+                               <li><h4>Charismatique</h4><p>Sans le chercher, elle attire les regards. On est facilement attiré par la jeune féline, quelque chose en elle retient l'œil sans le moindre effort.</p></li>
+                               <li><h4>Résiliente</h4><p>Ayant grandi dans un clan qui a appris à survivre avec rien, elle a développé une résilience à toute épreuve. Elle ne s'effondre pas.</p></li>
+                               <li><h4>Aimante</h4><p>Quand Petite Mygale aime quelqu'un, elle aime vraiment. Profondément, intensément, avec une sincérité qui peut surprendre. C'est une connexion unique.</p></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                            <span>➜ <strong>Défauts</strong></span>
+                            <span class="icon-status">+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <ul class="trait-list-v2">
+                                <li><h4>Têtue</h4><p>Quand elle a une idea en tête, elle ne l'a pas ailleurs. Rien ne la fera plier, rien ne la fera dévier. Elle ira jusqu'au bout, qu'importe les obstacles.</p></li>
+                                <li><h4>Méfiante</h4><p>La loyauté se mérite. Elle ne se donne pas. Elle se montre très méfiante envers les autres, et encore plus envers ceux qui ne viennent pas de son clan.</p></li>
+                                <li><h4>Émotive</h4><p>Ses émotions la submergent bien plus vite qu'elle ne le voudrait, la débordent avant même qu'elle ait eu le temps de les contenir. Elle déteste ça.</p></li>
+                                <li><h4>Repliée sur elle-même</h4><p>Quand quelque chose ne va pas, elle se referme, disparaît un peu dans ses propres pensées, son propre silence. Elle préfère porter ses fardeaux seule.</p></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                            <span>➜ <strong>Goûts & Dégoûts</strong></span>
+                            <span class="icon-status">+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="box-tastes">
+                                <h4 class="taste-title positive">❤️ J'aime beaucoup</h4>
+                                <div class="taste-item"><h5>Grands Espaces</h5><p>Elle adore les espaces ouverts, les grandes étendues d'herbe et de vent pour courir sans limites.</p></div>
+                                <div class="taste-item"><h5>Les Histoires</h5><p>Elle aime qu'on lui raconte des histoires pour apprendre du vécu et des erreurs des autres.</p></div>
+                                <div class="taste-item"><h5>Proies</h5><p>Elle a un faible pour le lapin. C'est simple, c'est instinctif.</p></div>
+                                <div class="sub-comment-tastes">Ses goûts évolueront avec le temps et les épreuves.</div>
+                            </div>
+                            <div class="box-tastes" style="margin-top: 25px;">
+                                <h4 class="taste-title negative">🖤 Je n'aime pas</h4>
+                                <div class="taste-item"><h5>Ombre d'un Fantôme</h5><p>Elle ne supporte pas qu'on la compare à sa mère. Elle est elle. Rien d'autre.</p></div>
+                                <div class="taste-item"><h5>Sous-Estimée</h5><p>Elle ne supporte pas qu'on l'ignore, ni qu'on la regarde de haut pour son statut de survivante unique.</p></div>
+                                <div class="taste-item"><h5>Proies</h5><p>Le poisson. Catégoriquement. Sans appel.</p></div>
+                                <div class="sub-comment-tastes">Ses dégoûts évolueront avec le temps et les épreuves.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                            <span>➜ <strong>Peurs & Phobies</strong></span>
+                            <span class="icon-status">+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="inner-quote-box"><p>Elle a peur de ne jamais exister vraiment pour elle-même. Peur de n'être qu'un reflet ou une continuation d'Éclat de Scarabée aux yeux du clan.</p></div>
+                            <div class="inner-quote-box" style="margin-top: 15px;"><p>Elle est terrifiée par les espaces clos et les tunnels sombres. Mais elle doute : est-ce sa vraie peur, ou l'écho de la phobie de sa mère qu'on lui a trop racontée ?</p></div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                            <span>➜ <strong>Habitudes & Échos</strong></span>
+                            <span class="icon-status">+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <ul class="trait-list-v2">
+                                <li><h4>Le Parler Chantant</h4><p>Stressée, ses syllabes s'allongent et se font presque chantées. Un écho immédiat à Éclat de Scarabée.</p></li>
+                                <li><h4>La Démarche Flottante</h4><p>Elle a hérité de l'élégance naturelle et flottante de sa mère, posant ses pattes comme si le sol était délicat.</p></li>
+                                <li><h4>La Fleur Rituelle</h4><p>Elle glisse parfois des fleurs dans son pelage lors des événements, provoquant une vive nostalgie chez Harmonie des Prés.</p></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="apparence" class="content-section">
+                <h2>Apparence Physique</h2>
+                <div class="global-desc-box">
+                    <p>Petite Mygale a un corps qu'on qualifierait de <strong>longiligne, fin, souple, léger</strong>. Pourtant, si on regarde de plus près, ce n'est pas toute l'histoire. On distingue des muscles, discrets mais présents, notamment sur le poitrail et les pattes. Elle n'est pas purement longiligne, après tout, elle a hérité de ses deux parents. Elle possède une longue queue, fine et souple, qu'elle aime laisser balancer derrière elle avec une nonchalance toute naturelle.</p>
+                    <p><strong>Son pelage est une beauté à part entière.</strong> D'un bleu chaud, presque fumé, avec des sous-tons sablés qui le réchauffent et le rendent absolument unique. Elle a hérité du ticking de sa mère, ce patron qui la rend si semblable à Lueur du Méloé que ceux qui l'ont connue s'y perdent parfois, le temps d'un regard. Deux détails la distinguent pourtant : le bout de sa queue est blanc, et une petite tache de même couleur orne son poitrail, un héritage discret de son père, posé là comme une signature. Son poil, légèrement plus dense que celui de sa mère, lui offre une maigre protection contre le froid. Maigre, mais présente.</p>
+                    <p>Ce qui la rend vraiment singulière, c'est la forme de son museau, long, épais, bien différent de ce qu'on voit habituellement. Associé à ses oreilles, larges et écartées, perchées haut sur sa tête, elle a quelque chose d'atypique dans le visage. Quelque chose qui retient l'œil.</p>
+                    <p>Ses yeux sont en amande, joliment soulignés par de longs cils gris foncés. Leur couleur, <strong>un ambre chaud</strong>, contraste avec le bleu fumé de son pelage d'une façon qui ne laisse pas indifférent.</p>
+                    <p>En termes de taille, elle sera plutôt dans la moyenne une fois adulte. Elle figurera sans doute parmi les plus légères de son clan, ce genre de légèreté qu'on ne voit pas venir, et qui surprend toujours.</p>
+                </div>
+
+                <div class="spider-divider"></div>
+
+                <div class="accordion-container">
+                    <div class="accordion-item">
+                        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                            <span>➜ <strong>Points Forts</strong></span>
+                            <span class="icon-status">+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <ul class="trait-list-v2 strength">
+                                <li><h4>Vitesse</h4><p>Son corps longiligne est fait pour aller vite. Elle court avec une aisance naturelle, une fluidité qui lui permet de se démarquer sur la lande, assez pour devenir l'une des meilleures chasseuses de lapin.</p></li>
+                                <li><h4>Agilité</h4><p>Elle est souple, légère, précise. Son corps répond vite, change de direction sans effort apparent. Elle se faufile là où d'autres peineraient avec grâce.</p></li>
+                                <li><h4>Ouïe</h4><p>Ses grandes oreilles captent tout, le froissement d'une herbe, le souffle d'un vent qui change, un son trop discret pour le commun des mortels.</p></li>
+                                <li><h4>Morsure forte</h4><p>Son long museau lui confère une force de morsure surprenante au premier abord. Sa mâchoire est une arme à part entière.</p></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                            <span>➜ <strong>Points Faibles</strong></span>
+                            <span class="icon-status">+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <ul class="trait-list-v2 weakness">
+                                <li><h4>Force Brute</h4><p>Elle a la vitesse, pas la puissance. Dans un affrontement direct, au corps à corps, elle le paiera.</p></li>
+                                <li><h4>Résistance au Froid</h4><p>La mauvaise saison la met à rude épreuve, et le froid la pénètre plus vite qu'elle ne le voudrait. Un héritage dont elle se serait passée.</p></li>
+                                <li><h4>Problème d’équilibre</h4><p>La lande, oui. Les arbres, non. Grimper n'est pas fait pour elle, son corps la trahit dès que le terrain devient vertical.</p></li>
+                                <li><h4>Corpulence fragile</h4><p>Son corps se marque vite. Les coups laissent des traces, les blessures arrivent facilement. Chaque cicatrice est durement gagnée.</p></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                            <span>➜ <strong>Marques & Attributs</strong></span>
+                            <span class="icon-status">+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <ul class="trait-list-v2">
+                                <li><h4>Handicap</h4><p class="empty-mark">// Aucun</p></li>
+                                <li><h4>Accessoires</h4><p class="empty-mark">// Aucun</p><div class="context-comment" style="padding-left:0;">À voir dans le futur.</div></li>
+                                <li><h4>Cicatrices</h4><p class="empty-mark">// Aucune</p><div class="context-comment" style="padding-left:0;">À voir dans le futur.</div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="histoire" class="content-section">
+                <h2>Histoire & Chroniques</h2>
+                <div class="chapters-nav">
+                    <button class="chapter-btn active" onclick="openSubTab(event, 'chapitre1')">Chapitre I</button>
+                    <button class="chapter-btn" onclick="openSubTab(event, 'chapitre2')">Chapitre II</button>
+                </div>
+                <div class="chapters-container">
+                    <div id="chapitre1" class="chapter-content active-chapter">
+                        <div class="chapter-header">
+                            <h3>Chapitre I : Les Fils du Deuil</h3>
+                            <span class="chapter-age">Âge : 0 à 3 lunes</span>
+                        </div>
+                        <p>À seulement trois lunes, Petite Mygale n'a pas encore de grandes épopées à inscrire dans les mémoires du clan. Elle n'a pas chassé de faucon, ni repoussé d'invasion. Pourtant, son histoire est déjà lourde, marquée au fer rouge par le deuil et la survie.</p>
+                        <p>La tragedy a frappé très tôt. Ses frères sont partis les premiers, alors qu'ils n'avaient qu'une lune. Une maladie ? Une faiblesse ? Le Clan des Étoiles les a emportés en silence, sans laisser d'explications. Petite Mygale était trop petite pour comprendre la Faucheuse, mais elle a tout de même ressenti le froid du nid devenu trop grand pour elle seule.</p>
+                        <p>Le coup de grâce est survenu à sa deuxième lune. Sa mère, Éclat de Scarabée, a rendu son dernier soupir pour rejoindre la Toison Argentée. Ce jour-là, la chatonne n'a pas eu besoin de mots pour comprendre : son cœur de bébé chat a enregistré ce vide immense, définitif, qui laisse un goût d'abandon dans la gorge.</p>
+                        <p>C'est <strong>Harmonie des Prés</strong> qui est alors intervenue pour recueillir l'orpheline. Unique pilier, unique figure maternelle, elle l'a prise sous son aile avec toute la douceur et la bienveillance dont elle était capable. C'est à elle que Petite Mygale doit sa survie, ses connaissances actuelles et les quelques moments de pure tendresse qu'elle s'autorise à receive. Harmonie des Prés est son ancre dans la tempête, le seul fil qui la rattache à un semblant de foyer.</p>
+                        <div class="quote-box" style="margin-left: 0;">
+                            Pourtant, le regard des autres membres du clan est difficile à porter. En grandissant, Petite Mygale entend les chuchotements. On scrute ses traits, on analyse sa démarche, on cherche désespérément le fantôme d'Éclat de Scarabée en elle. On lui parle de cet "héritage" comme d'un honneur, mais la petite sait lire entre les lignes. Elle a compris que sa mère n'était pas une sainte aux yeux de tous ; elle a été critique, incomprise, parfois rejetée pour ses choix avant d'être pleurée. Alors, face aux yeux ambrés du clan qui la fixent, Petite Mygale ne ressent aucune fierté. Juste une peur sourde et tenace : celle de n'être jamais acceptée pour elle-même, de rester à jamais l'ombre d'une mère disparue.
+                        </div>
+                    </div>
+                    <div id="chapitre2" class="chapter-content">
+                        <div class="chapter-header">
+                            <h3>Chapitre II : Titre à venir...</h3>
+                            <span class="chapter-age">Âge : En cours</span>
+                        </div>
+                        <div class="rp-placeholder">
+                            <svg viewBox="0 0 24 24" width="40" height="40"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04334 16.4525L2 22L7.61118 20.9301C8.91973 21.6196 10.4149 22C12 22Z" stroke="#4f5e74" stroke-width="1" fill="none"/></svg>
+                            <p>L'histoire s'écrira au fil du jeu de rôle et des rencontres de Petite Mygale sur le territoire...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="genealogie" class="content-section">
+                <h2>Généalogie & Lignée</h2>
+                <p class="sub-line">Origine : 100% Clan du Vent</p>
+
+                <h3>I. Famille Maternelle</h3>
+                <div class="family-grid">
+                    <div class="family-card dead-member">
+                        <div class="avatar-circle"><img src="assets/photos/Bruissement du Moustique - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Bruissement du Moustique <span>🪦</span></h4>
+                            <span class="role">Grand-mère (PNJ)</span>
+                        </div>
+                    </div>
+                    <div class="family-card missing-member">
+                        <div class="avatar-circle"><img src="assets/photos/Aile de Cigale - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Aile de Cigale <span>🌫️</span></h4>
+                            <span class="role">Grand-père (PNJ)</span>
+                            <p class="desc">Disparu de la lande.</p>
+                        </div>
+                    </div>
+                    <div class="family-card alive-member priority">
+                        <div class="avatar-circle"><img src="assets/photos/Harmonie des Prés - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Harmonie des Prés</h4>
+                            <span class="role">Grande-Tante (PNJ)</span>
+                            <p class="desc">Sœur d'Aile de Cigale. C'est elle qui a recueilli et élevé Petite Mygale après la mort d'Éclat de Scarabée.</p>
+                        </div>
+                    </div>
+                    <div class="family-card dead-member">
+                        <div class="avatar-circle"><img src="assets/photos/Eclat de Scarabée - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Éclat de Scarabée <span>🪦</span></h4>
+                            <span class="role">Mère (PNJ)</span>
+                        </div>
+                    </div>
+                    <div class="family-card dead-member">
+                        <div class="avatar-circle"><img src="assets/photos/Nuage de Luciole - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Nuage de Luciole <span>🪦</span></h4>
+                            <span class="role">Oncle (PNJ)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spider-divider"></div>
+
+                <h3>II. Famille Paternelle</h3>
+                <div class="family-grid">
+                    <div class="family-card dead-member">
+                        <div class="avatar-circle"><img src="assets/photos/Etoile de Nuit - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Étoile de Nuit <span>🪦</span></h4>
+                            <span class="role">Grand-mère (PNJ)</span>
+                        </div>
+                    </div>
+                    <div class="family-card dead-member">
+                        <div class="avatar-circle"><img src="assets/photos/Siffle Brise - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Siffle Brise <span>🪦</span></h4>
+                            <span class="role">Grand-père (PNJ)</span>
+                        </div>
+                    </div>
+                    <div class="family-card alive-member unknown">
+                        <div class="avatar-circle"><img src="assets/photos/Griffe de Silex - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Griffe de Silex</h4>
+                            <span class="role">Père (PNJ)</span>
+                            <p class="desc">Un père totalement inconnu pour Petite Mygale, qui n'a laissé qu'une tache et un bout de queue blancs en héritage.</p>
+                        </div>
+                    </div>
+                    <div class="family-card alive-member">
+                        <div class="avatar-circle"><img src="assets/photos/Eclat Sombre - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Éclat Sombre</h4>
+                            <span class="role">Tante (PNJ)</span>
+                        </div>
+                    </div>
+                    <div class="family-card alive-member">
+                        <div class="avatar-circle"><img src="assets/photos/Souffle de Brume - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Souffle de Brume</h4>
+                            <span class="role">Oncle (PNJ)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spider-divider"></div>
+
+                <h3>III. Famille d'Adoption</h3>
+                <div class="family-grid">
+                    <div class="family-card alive-member adoption-parent">
+                        <div class="avatar-circle"><img src="assets/photos/Prestesse de la Perdrix - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Prestesse de la Perdrix</h4>
+                            <span class="role">Mère Adoptive (PNJ)</span>
+                            <p class="desc">Elle a ouvert son nid et offert sa protection à la petite après ses premiers jours difficiles.</p>
+                        </div>
+                    </div>
+                    <div class="family-card empty-card">
+                        <div class="member-info">
+                            <h4>Compagnon de Prestesse</h4>
+                            <p class="desc">Emplacement réservé pour un futur amant ou compagnon.</p>
+                        </div>
+                    </div>
+                    <div class="family-card empty-card">
+                        <div class="member-info">
+                            <h4>Adelphité d'Adoption</h4>
+                            <p class="desc">Emplacement réservé pour les futurs enfants ou portées de Prestesse.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spider-divider"></div>
+
+                <h3>IV. Adelphité</h3>
+                <div class="family-grid">
+                    <div class="family-card dead-member">
+                        <div class="avatar-circle"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23334155'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z'/%3E%3C/svg%3E" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Petite Puce <span>🪦</span></h4>
+                            <span class="role">Frère (PNJ)</span>
+                            <p class="desc">Parti à l'âge d'une lune.</p>
+                        </div>
+                    </div>
+                    <div class="family-card dead-member">
+                        <div class="avatar-circle"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23334155'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z'/%3E%3C/svg%3E" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Petite Noctuelle <span>🪦</span></h4>
+                            <span class="role">Frère (PNJ)</span>
+                            <p class="desc">Parti à l'âge d'une lune.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spider-divider"></div>
+
+                <h3>V. Cousins & Cousines</h3>
+                <div class="family-grid">
+                    <div class="family-card alive-member">
+                        <div class="avatar-circle"><img src="assets/photos/Ombre de Nuit - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Ombre de Nuit</h4>
+                            <span class="role">Cousin (PNJ)</span>
+                            <p class="desc">Fils d'Éclat Sombre.</p>
+                        </div>
+                    </div>
+                    <div class="family-card alive-member">
+                        <div class="avatar-circle"><img src="assets/photos/Aube de Givre - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Aube de Givre</h4>
+                            <span class="role">Cousine (PNJ)</span>
+                            <p class="desc">Fille d'Éclat Sombre.</p>
+                        </div>
+                    </div>
+                    <div class="family-card alive-member">
+                        <div class="avatar-circle"><img src="assets/photos/Cri de l'Epervier - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Cri de l'Épervier</h4>
+                            <span class="role">Cousin éloigné (PNJ)</span>
+                            <p class="desc">Fils d'Harmonie des Prés.</p>
+                        </div>
+                    </div>
+                    <div class="family-card alive-member">
+                        <div class="avatar-circle"><img src="assets/photos/Envol du Bombyx - PNJ.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Envol du Bombyx</h4>
+                            <span class="role">Cousine éloignée (PNJ)</span>
+                            <p class="desc">Fille d'Harmonie des Prés.</p>
+                        </div>
+                    </div>
+                    <div class="family-card alive-member player-card">
+                        <div class="avatar-circle"><img src="assets/photos/Chant de Cigale.png" alt="Portrait"></div>
+                        <div class="member-info">
+                            <h4>Chant de Cigale <span class="tag-pj">PJ</span></h4>
+                            <span class="role">Cousine éloignée — <small class="player-tag">@lavnd.13</small></span>
+                            <p class="desc">Fille d'Harmonie des Prés.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spider-divider"></div>
+
+                <h3>VI. Partenaire & Descendance</h3>
+                <div class="family-grid">
+                    <div class="family-card empty-card">
+                        <div class="member-info">
+                            <h4>Aucun partenaire</h4>
+                            <p class="desc">Elle n'a que 3 lunes ! L'avenir nous le dira.</p>
+                        </div>
+                    </div>
+                    <div class="family-card empty-card">
+                        <div class="member-info">
+                            <h4>Aucune descendance</h4>
+                            <p class="desc">Pas de chatons ni de petits-chatons pour le moment.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="relations" class="content-section active">
+                <h2>Réseau de Relations</h2>
+                <p class="sub-line">Les fils qu'elle tisse avec les chats de la lande au fil de ses rencontres</p>
+                
+                <div class="relations-index">
+                    <h4>Index des Échelons</h4>
+                    <div class="index-grid">
+                        <div class="index-item"><span>❤️ · ❤️❤️ · ❤️❤️❤️</span> <small>✦ Appréciation positive</small></div>
+                        <div class="index-item"><span>🖤 · 🖤🖤 · 🖤🖤🖤</span> <small>✦ Aversion</small></div>
+                        <div class="index-item"><span>❤️🖤</span> <small>✦ Neutre</small></div>
+                        <div class="index-item"><span>⭐</span> <small>✦ Respect</small></div>
+                        <div class="index-item"><span>🪦</span> <small>✦ Décédé(e)</small></div>
+                    </div>
+                </div>
+
+                <div class="relations-list">
+                    
+                    <div class="relation-card">
+                        <div class="rel-avatar"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23b91c1c'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z'/%3E%3C/svg%3E" alt="Portrait"></div>
+                        <div class="rel-text">
+                            <div class="rel-header">
+                                <h3>Étoile d'Ocre</h3>
+                                <span class="rel-badges">❤️ · ⭐</span>
+                            </div>
+                            <span class="rel-status">Meneur du Clan du Vent (PNJ)</span>
+                            <p>Il garde un œil sur Petite Mygale, car elle est l'enfant de l'ancienne guérisseuse, Éclat de Scarabée. Petite Mygale apprécie le meneur, elle aime bien lui poser des questions.</p>
+                        </div>
+                    </div>
+
+                    <div class="relation-card">
+                        <div class="rel-avatar"><img src="assets/photos/Chant de Cigale.png" alt="Portrait"></div>
+                        <div class="rel-text">
+                            <div class="rel-header">
+                                <h3>Chant de Cigale</h3>
+                                <span class="rel-badges">❤️❤️❤️</span>
+                            </div>
+                            <span class="rel-status">Guérisseuse du Clan / Cousine (PJ)</span>
+                            <p>Apprentie de sa mère et sa cousine éloignée, Petite Mygale est très à l'aise avec la féline ! Elle aime énormément passer du temps avec elle, dans sa tanière.</p>
+                        </div>
+                    </div>
+
+                    <div class="relation-card">
+                        <div class="rel-avatar"><img src="assets/photos/Prestesse de la Perdrix - PNJ.png" alt="Portrait"></div>
+                        <div class="rel-text">
+                            <div class="rel-header">
+                                <h3>Prestesse de la Perdrix</h3>
+                                <span class="rel-badges">❤️ · ❤️🖤</span>
+                            </div>
+                            <span class="rel-status">Mère Adoptive (PNJ)</span>
+                            <p>Sa mère adoptive, elle l'apprécie bien qu'elle ait encore un peu de mal avec elle, après tout sa mère adoptive lui met énormément de pression sur ses épaules. Mais au fond, Mygale l'aime beaucoup.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="galerie" class="content-section">
+                <h2>Galerie d'Art</h2>
+                <p class="sub-line">Illustrations, croquis et designs officiels de Petite Mygale</p>
+                
+                <div class="gallery-grid">
+                    <div class="gallery-card">
+                        <div class="image-wrapper">
+                            <img src="assets/photos/Petite Mygale.png" alt="Petite Mygale" onerror="this.classList.add('missing-img');">
+                            <div class="img-overlay-info"><span>Référence</span></div>
+                        </div>
+                        <div class="gallery-meta">
+                            <h4>Regard Ambré</h4>
+                            <p>Design officiel à l'âge de 3 lunes. Silhouette fine et ticking sablé.</p>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <div class="image-wrapper">
+                            <img src="assets/photos/Mygale__Meloe.png" alt="Mère et Fille" onerror="this.classList.add('missing-img');">
+                            <div class="img-overlay-info"><span>Artwork</span></div>
+                        </div>
+                        <div class="gallery-meta">
+                            <h4>Avant le drame</h4>
+                            <p>Illustration montrant Petite Mygale et sa mère, Éclat de Scarabée.</p>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <div class="image-wrapper">
+                            <img src="assets/photos/Petite Mygale - Loops.png" alt="Doodle" onerror="this.classList.add('missing-img');">
+                            <div class="img-overlay-info"><span>Artwork</span></div>
+                        </div>
+                        <div class="gallery-meta">
+                            <h4>L'Ombre d'Éclat de Scarabée</h4>
+                            <p>Illustration de Petite Mygale par @Loops.</p>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <div class="image-wrapper">
+                            <img src="assets/photos/Petite Mygale - Milo.png" alt="Doodle" onerror="this.classList.add('missing-img');">
+                            <div class="img-overlay-info"><span>Artwork</span></div>
+                        </div>
+                        <div class="gallery-meta">
+                            <h4>L'Ombre d'Éclat de Scarabée</h4>
+                            <p>Illustration de Petite Mygale par @Milo.</p>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <div class="image-wrapper">
+                            <img src="assets/photos/Mygale Moonlight.png" alt="Doodle" onerror="this.classList.add('missing-img');">
+                            <div class="img-overlay-info"><span>Artwork</span></div>
+                        </div>
+                        <div class="gallery-meta">
+                            <h4>L'Ombre d'Éclat de Scarabée</h4>
+                            <p>Illustration de Petite Mygale par @Moonlight.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="sheet-footer">
+                <div class="footer-line"></div>
+                <div class="footer-credits">
+                    <p>© 2026 — Fiche de Personnage de <strong>@.araxia.</strong></p>
+                    <p>Inspiré de <em>@Oriyakii</em> — © 2026</p>
+                    <p>Inspiré de l'univers de <em>La Guerre des Clans</em> • Codé avec soin pour GitHub Pages</p>
+                </div>
+            </footer>
+
+        </main>
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            const sections = document.getElementsByClassName("content-section");
+            for (let i = 0; i < sections.length; i++) {
+                sections[i].classList.remove("active");
+                sections[i].style.display = "none";
+            }
+            const buttons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("active");
+            }
+            const targetSection = document.getElementById(tabName);
+            targetSection.classList.add("active");
+            targetSection.style.display = "block";
+            evt.currentTarget.classList.add("active");
+        }
+
+        function toggleAccordion(element) {
+            element.classList.toggle("open");
+            const content = element.nextElementSibling;
+            const icon = element.querySelector(".icon-status");
+
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.style.padding = "0 20px";
+                icon.textContent = "+";
+            } else {
+                content.style.maxHeight = content.scrollHeight + 120 + "px";
+                content.style.padding = "25px 20px";
+                icon.textContent = "-";
+            }
+        }
+
+        function openSubTab(evt, chapterId) {
+            const contents = document.getElementsByClassName("chapter-content");
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].classList.remove("active-chapter");
+            }
+            const buttons = document.getElementsByClassName("chapter-btn");
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("active");
+            }
+            document.getElementById(chapterId).classList.add("active-chapter");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>
