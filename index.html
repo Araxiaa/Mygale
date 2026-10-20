@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Petite Mygale — Clan du Vent</title>
+    <meta name="description" content="Fiche de personnage de Petite Mygale, chatonne du Clan du Vent : nomenclature, personnalité, apparence, histoire, généalogie, relations et galerie.">
+    <meta name="theme-color" content="#12111a">
+    <meta property="og:title" content="Petite Mygale — Clan du Vent">
+    <meta property="og:description" content="Un nom qui commence comme un défaut, et qui finit comme une promesse.">
+    <meta property="og:image" content="assets/photos/petite-mygale-m.webp">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Figtree:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="toile" viewBox="0 0 200 200">
+                <g fill="none" stroke="currentColor" stroke-width=".7" stroke-linecap="round">
+                    <path d="M0 0L200 200M0 40L200 200M0 90L200 200M40 0L200 200M90 0L200 200M0 0L130 0M0 0L0 130"/>
+                    <path d="M24 0Q22 22 0 24M52 0Q46 46 0 52M84 0Q74 74 0 84M122 0Q104 104 0 122M170 0Q142 142 0 170"/>
+                </g>
+            </symbol>
+            <symbol id="araignee" viewBox="0 0 48 48">
+                <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21L9 12 3 14M20 24L6 24 2 30M20 27L8 36 6 44M21 29L14 40 15 46"/>
+                    <path d="M28 21L39 12 45 14M28 24L42 24 46 30M28 27L40 36 42 44M27 29L34 40 33 46"/>
+                </g>
+                <ellipse cx="24" cy="31" rx="7" ry="9" fill="currentColor"/>
+                <circle cx="24" cy="19.5" r="5" fill="currentColor"/>
+                <path d="M24 26.5l2 3-2 3-2-3z" fill="var(--ambre)"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <canvas id="poussiere" aria-hidden="true"></canvas>
+    <svg class="coin coin-g" aria-hidden="true"><use href="#toile"/></svg>
+    <svg class="coin coin-d" aria-hidden="true"><use href="#toile"/></svg>
+
+    <div class="fil" aria-hidden="true"><i></i><svg><use href="#araignee"/></svg></div>
+
+    <div class="page">
+        <aside class="lateral">
+            <header class="identite">
+                <p class="surtitre" id="clan"></p>
+                <h1>Petite <em>Mygale</em></h1>
+                <p class="devise" id="devise"></p>
+            </header>
+
+            <dl class="fiche" id="fiche"></dl>
+
+            <nav class="onglets" id="onglets" aria-label="Rubriques">
+                <a href="#profil">Nomenclature</a>
+                <a href="#caractere">Personnalité</a>
+                <a href="#apparence">Apparence</a>
+                <a href="#histoire">Histoire</a>
+                <a href="#genealogie">Généalogie</a>
+                <a href="#relations">Relations</a>
+                <a href="#galerie">Galerie</a>
+            </nav>
+        </aside>
+
+        <main class="principal" id="principal">
+            <section class="panneau" id="p-profil"></section>
+            <section class="panneau" id="p-caractere"></section>
+            <section class="panneau" id="p-apparence"></section>
+            <section class="panneau" id="p-histoire"></section>
+            <section class="panneau" id="p-genealogie"></section>
+            <section class="panneau" id="p-relations"></section>
+            <section class="panneau" id="p-galerie"></section>
+
+            <footer class="pied">
+                <p id="pied"></p>
+                <a class="secret" href="admin.html" aria-label="Espace de gestion" title="·"><svg><use href="#araignee"/></svg></a>
+            </footer>
+        </main>
+    </div>
+
+    <dialog id="visionneuse" aria-label="Illustration">
+        <button type="button" class="fermer" aria-label="Fermer">×</button>
+        <img alt="">
+        <p></p>
+    </dialog>
+
+    <script src="js/outils.js"></script>
+    <script src="js/data/contenu.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/donnees.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/ambiance.js" defer></script>
+</body>
+</html>

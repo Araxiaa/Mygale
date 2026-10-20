@@ -1,0 +1,1 @@
+{ "version": "0.0.1", "configurations": [ { "name": "mygale", "runtimeExecutable": "node", "runtimeArgs": ["scripts/serve.js"], "port": 5501 } ] }
