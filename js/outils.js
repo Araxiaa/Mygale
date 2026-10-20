@@ -56,5 +56,65 @@
         return s ? '<span class="coeurs" role="img" aria-label="' + esc(sens.join(', ')) + '">' + s + '</span>' : '';
     }
 
-    window.Outils = { esc: esc, riche: riche, url: url, miniature: miniature, avatar: avatar, avatars: avatars, icone: icone, coeurs: coeurs };
+    /* ---------- Lunes ---------- */
+    function nombre(l) { var n = parseFloat(l); return isNaN(n) ? null : n; }
+    function lune(l) {
+        if (l == null || l === '') return '';
+        var n = nombre(l);
+        if (n != null && String(l).trim() === String(n)) return n + (n > 1 ? ' lunes' : ' lune');
+        return String(l);
+    }
+
+    /* ---------- Relations : un chat + la liste datée de ses avis ---------- */
+    // Accepte aussi l'ancien format (affinite / respect / texte directement sur le chat)
+    function relation(r) {
+        var o = {};
+        Object.keys(r).forEach(function (k) { if (k !== 'affinite' && k !== 'respect' && k !== 'texte' && k !== 'mitige') o[k] = r[k]; });
+        var avis = Array.isArray(r.avis) ? r.avis.slice() : [];
+        if (!avis.length && (r.texte || typeof r.affinite === 'number' || r.respect)) {
+            avis = [{ lune: r.lune, affinite: r.affinite, respect: r.respect, mitige: r.mitige, texte: r.texte }];
+        }
+        // du plus ancien au plus récent (à lune égale, l'ordre saisi est conservé)
+        o.avis = avis.map(function (a, i) { return { a: a, i: i }; })
+            .sort(function (x, y) { return ((nombre(x.a.lune) || 0) - (nombre(y.a.lune) || 0)) || (x.i - y.i); })
+            .map(function (x) { return x.a; });
+        o.dernier = o.avis[o.avis.length - 1] || {};
+        return o;
+    }
+    // Cœurs d'un avis (le crâne dépend du chat, pas de l'avis)
+    function coeursAvis(a, rel) { return coeurs({ affinite: a.affinite, mitige: a.mitige, respect: a.respect, mort: rel && rel.mort }); }
+
+    // Courbe d'évolution de l'affinité (de -3 aversion à +3 appréciation)
+    function courbe(avis, grande) {
+        var pts = avis.filter(function (a) { return typeof a.affinite === 'number'; });
+        if (pts.length < 2) return '';
+        var W = grande ? 360 : 84, H = grande ? 150 : 26, px = grande ? 26 : 3, py = grande ? 22 : 3;
+        var ln = pts.map(function (a) { return nombre(a.lune); });
+        var min = Math.min.apply(null, ln), max = Math.max.apply(null, ln);
+        var lineaire = ln.every(function (v) { return v != null; }) && max > min;
+        var xy = pts.map(function (a, i) {
+            var x = px + (W - 2 * px) * (lineaire ? (ln[i] - min) / (max - min) : i / (pts.length - 1));
+            return [x, py + (H - 2 * py) * (3 - a.affinite) / 6];
+        });
+        var ligne = xy.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ');
+        var s = '<svg class="courbe' + (grande ? ' grande' : '') + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Évolution de l\'affinité">';
+        if (grande) {
+            [3, 0, -3].forEach(function (v) {
+                var y = py + (H - 2 * py) * (3 - v) / 6;
+                s += '<line x1="' + px + '" x2="' + (W - px) + '" y1="' + y + '" y2="' + y + '" class="repere' + (v === 0 ? ' zero' : '') + '"/>';
+            });
+            s += '<text x="2" y="' + (py + 4) + '" class="legende-y">♥</text><text x="2" y="' + (H - py + 4) + '" class="legende-y">✕</text>';
+        }
+        s += '<polyline points="' + ligne + '" class="trait"/>';
+        xy.forEach(function (p, i) {
+            s += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + (grande ? 4.5 : 2.2) + '" class="point ' + (pts[i].affinite > 0 ? 'pos' : pts[i].affinite < 0 ? 'neg' : '') + '"><title>' + esc(lune(pts[i].lune)) + '</title></circle>';
+            if (grande) s += '<text x="' + p[0].toFixed(1) + '" y="' + (H - 3) + '" text-anchor="middle" class="legende-x">' + esc(nombre(pts[i].lune) != null ? nombre(pts[i].lune) : '') + '</text>';
+        });
+        return s + '</svg>';
+    }
+
+    window.Outils = {
+        esc: esc, riche: riche, url: url, miniature: miniature, avatar: avatar, avatars: avatars, icone: icone, coeurs: coeurs,
+        nombre: nombre, lune: lune, relation: relation, coeursAvis: coeursAvis, courbe: courbe
+    };
 })();

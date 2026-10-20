@@ -31,6 +31,13 @@
         return { k: cle, t: 'liste', l: libelle, ajout: ajout, lib: function (o) { return o.nom; }, item: NOM_TEXTE };
     }
 
+    // Clans / groupes déjà saisis, proposés à l'écriture (pour écrire toujours pareil)
+    function clansConnus() {
+        var vus = [];
+        ((donnees.relations && donnees.relations.liste) || []).forEach(function (r) { if (r.clan && vus.indexOf(r.clan) < 0) vus.push(r.clan); });
+        return vus;
+    }
+
     var RUBRIQUES = [
         {
             cle: 'fiche', nom: 'Fiche & accueil', defaut: 'fiche',
@@ -38,6 +45,8 @@
             champs: [
                 { k: 'clan', t: 'text', l: 'Clan' },
                 { k: 'devise', t: 'text', l: 'Devise (sous le nom)' },
+                { k: 'accroche', t: 'area', l: 'Phrase d\'accroche (accueil)' },
+                { k: 'portrait', t: 'image', l: 'Illustration de l\'accueil' },
                 { k: 'pv', t: 'text', l: 'Santé (PV)', aide: 'Ex. 10 / 10' },
                 { k: 'pa', t: 'text', l: 'Énergie (PA)', aide: 'Ex. 2 / 2' },
                 { k: 'pied', t: 'text', l: 'Pied de page' },
@@ -47,10 +56,11 @@
         },
         {
             cle: 'noms', nom: 'Nomenclature', defaut: 'noms', racineListe: true,
-            aide: 'Les noms successifs. Le premier est mis en avant (nom actuel).',
+            aide: 'Les noms successifs. Dans chaque nom, le bouton « Définir comme nom actuel » choisit celui qu\'elle porte maintenant : il remplace le nom affiché partout sur le site.',
             champs: [{
-                k: 'liste', t: 'liste', ajout: 'Ajouter un nom', lib: function (o) { return (o.etape || '') + ' · ' + (o.nom || ''); },
+                k: 'liste', t: 'liste', ajout: 'Ajouter un nom', lib: function (o) { return (o.actuel ? '★ ' : '') + (o.etape || '') + ' · ' + (o.nom || '') + (o.actuel ? ' (nom actuel)' : ''); },
                 item: [
+                    { k: 'actuel', t: 'exclusif', l: 'Nom porté actuellement' },
                     { k: 'etape', t: 'text', l: 'Étape', aide: 'Ex. Nom de Chaton' },
                     { k: 'nom', t: 'text', l: 'Nom' },
                     { k: 'periode', t: 'text', l: 'Période', aide: 'Ex. 0 à 6 lunes' },
@@ -126,19 +136,65 @@
         },
         {
             cle: 'relations', nom: 'Relations', defaut: 'relations', racineListe: true,
-            aide: 'Les chats qui comptent pour elle, avec cœurs et appréciation.',
+            aide: 'Chaque chat a une fiche et une liste d\'avis datés, du plus ancien au plus récent : c\'est ce qui permet de suivre l\'évolution de la relation.',
             champs: [{
                 k: 'liste', t: 'liste', ajout: 'Ajouter une relation', lib: function (o) { return o.nom + (o.role ? ' — ' + o.role : ''); },
                 item: [
                     { k: 'nom', t: 'text', l: 'Nom' },
-                    { k: 'role', t: 'text', l: 'Rôle' },
-                    { k: 'joueur', t: 'text', l: 'Joueur', aide: 'Ex. @pseudo' },
+                    { k: 'role', t: 'text', l: 'Rôle / rang', aide: 'Ex. Meneur, Guérisseuse, Mère adoptive' },
+                    { k: 'clan', t: 'text', l: 'Clan / groupe', aide: 'Sert de filtre sur le site. Laisser vide = « Sans clan »', suggere: clansConnus },
+                    { k: 'joueur', t: 'text', l: 'Joueur', aide: 'Ex. @pseudo ou PNJ' },
                     { k: 'photo', t: 'image', l: 'Portrait' },
-                    { k: 'affinite', t: 'select', num: true, l: 'Affinité', opts: AFFINITES },
-                    { k: 'mitige', t: 'bool', l: 'Mitigé (ajoute un cœur sombre)' },
-                    { k: 'respect', t: 'bool', l: 'Respect (étoile)' },
-                    { k: 'mort', t: 'bool', l: 'Décédé(e) (crâne)' },
-                    { k: 'texte', t: 'area', l: 'Appréciation' }
+                    { k: 'mort', t: 'bool', l: 'Décédé(e) (affiche un crâne)' },
+                    {
+                        k: 'avis', t: 'liste', l: 'Évolution de son avis (du plus ancien au plus récent)', ajout: 'Ajouter un avis',
+                        lib: function (o) {
+                            var a = AFFINITES.filter(function (x) { return String(x[0]) === String(o.affinite == null ? '' : o.affinite); })[0];
+                            return (o.lune != null && o.lune !== '' ? O.lune(o.lune) : 'Lune ?') + ' · ' + (a ? a[1] : '');
+                        },
+                        item: [
+                            { k: 'lune', t: 'number', l: 'À quelle lune ?', aide: 'Son âge à ce moment, ex. 6' },
+                            { k: 'affinite', t: 'select', num: true, l: 'Affinité', opts: AFFINITES },
+                            { k: 'mitige', t: 'bool', l: 'Mitigé (ajoute un cœur sombre)' },
+                            { k: 'respect', t: 'bool', l: 'Respect (étoile)' },
+                            { k: 'texte', t: 'area', l: 'Appréciation', aide: 'Ce qu\'elle pense de ce chat à ce moment' }
+                        ]
+                    }
+                ]
+            }]
+        },
+        {
+            cle: 'fils', nom: 'Fils RP', defaut: 'fils', racineListe: true,
+            aide: 'Le suivi des fils de jeu de rôle. Coche « En cours » tant que le fil n\'est pas terminé.',
+            champs: [{
+                k: 'liste', t: 'liste', ajout: 'Ajouter un fil', lib: function (o) { return (o.enCours ? '● ' : '') + (o.lune != null && o.lune !== '' ? O.lune(o.lune) + ' · ' : '') + (o.titre || ''); },
+                item: [
+                    { k: 'titre', t: 'text', l: 'Titre' },
+                    { k: 'lune', t: 'number', l: 'Nombre de lunes', aide: 'Son âge pendant le fil, ex. 6' },
+                    { k: 'enCours', t: 'bool', l: 'Fil en cours (décoche quand il est terminé)' },
+                    { k: 'lien', t: 'text', l: 'Lien du fil Discord', aide: 'Adresse complète, commence par https://' },
+                    { k: 'participants', t: 'text', l: 'Participants', aide: 'Les noms séparés par des virgules' },
+                    { k: 'description', t: 'area', l: 'Description' }
+                ]
+            }]
+        },
+        {
+            cle: 'sante', nom: 'Santé', defaut: 'sante', racineListe: true,
+            aide: 'L\'historique des blessures et maladies. Passe une entrée en « Guérie » quand elle est soignée.',
+            champs: [{
+                k: 'liste', t: 'liste', ajout: 'Ajouter une blessure / maladie',
+                lib: function (o) { return (o.statut === 'en_cours' ? '● ' : '') + (o.lune != null && o.lune !== '' ? O.lune(o.lune) + ' · ' : '') + (o.titre || ''); },
+                item: [
+                    { k: 'titre', t: 'text', l: 'Titre', aide: 'Ex. Patte déchirée, Toux verte' },
+                    { k: 'type', t: 'select', l: 'Type', opts: [['blessure', 'Blessure'], ['maladie', 'Maladie']] },
+                    { k: 'statut', t: 'select', l: 'État', opts: [['en_cours', 'En cours'], ['guerie', 'Guérie'], ['sequelle', 'Guérie avec séquelles']] },
+                    { k: 'gravite', t: 'select', l: 'Gravité', opts: [['', '—'], ['legere', 'Légère'], ['moderee', 'Modérée'], ['grave', 'Grave']] },
+                    { k: 'lune', t: 'number', l: 'Lune du début', aide: 'Son âge au moment des faits' },
+                    { k: 'fin', t: 'number', l: 'Lune de guérison', aide: 'Laisser vide si en cours' },
+                    { k: 'lien', t: 'text', l: 'Lien du fil Discord', aide: 'Facultatif, https://…' },
+                    { k: 'description', t: 'area', l: 'Ce qui s\'est passé' },
+                    { k: 'soins', t: 'area', l: 'Soins reçus' },
+                    { k: 'sequelles', t: 'area', l: 'Séquelles / cicatrices' }
                 ]
             }]
         },
@@ -196,7 +252,7 @@
     var compteur = 0;
 
     /* ---------- Éditeur de formulaires ---------- */
-    function formulaire(defs, obj, change) {
+    function formulaire(defs, obj, change, ctx) {
         var corps = h('div', { class: 'grille-champs' });
         var conteneur = h('div');
 
@@ -211,7 +267,14 @@
                 return;
             }
 
-            if (d.t === 'bool') {
+            if (d.t === 'exclusif') {
+                var actif = !!obj[d.k];
+                var bt = h('button', { type: 'button', class: actif ? 'bouton' : 'bouton-clair', text: actif ? '★ Nom porté actuellement' : 'Définir comme nom actuel' });
+                bt.disabled = actif;
+                bt.addEventListener('click', function () { obj[d.k] = true; if (ctx && ctx.exclusif) ctx.exclusif(d.k); });
+                champ = h('div', { class: 'champ' }, [bt, h('span', { class: 'aide', text: actif ? 'C\'est le nom affiché partout sur le site.' : 'Un seul nom peut être le nom actuel : les autres seront décochés.' })]);
+                champ.style.gridColumn = '1 / -1';
+            } else if (d.t === 'bool') {
                 var cb = h('input', { type: 'checkbox', id: id });
                 cb.checked = !!obj[d.k];
                 cb.addEventListener('change', function () { fixer(obj, d.k, cb.checked); change(); });
@@ -230,10 +293,19 @@
                         fixer(obj, d.k, v === '' ? '' : (d.num ? Number(v) : v));
                         change();
                     });
+                } else if (d.t === 'number') {
+                    saisie = h('input', { type: 'number', id: id, min: '0', step: '1', inputmode: 'numeric' });
+                    saisie.value = obj[d.k] == null ? '' : obj[d.k];
+                    saisie.addEventListener('input', function () { fixer(obj, d.k, saisie.value === '' ? '' : Number(saisie.value)); change(); });
                 } else if (d.t === 'image') {
                     saisie = champImage(id, d, obj, change);
                 } else {
                     saisie = h('input', { type: 'text', id: id });
+                    if (d.suggere) {
+                        var dl = h('datalist', { id: id + '-dl' }, d.suggere().map(function (v) { return h('option', { value: v }); }));
+                        saisie.setAttribute('list', id + '-dl');
+                        document.body.appendChild(dl);
+                    }
                     saisie.value = obj[d.k] == null ? '' : obj[d.k];
                     saisie.addEventListener('input', function () { fixer(obj, d.k, saisie.value); change(); });
                 }
@@ -352,7 +424,9 @@
                     })
                 ])]));
                 var corps = h('div', { class: 'item-corps' });
-                corps.appendChild(formulaire(d.item, item, function () { libelle(); change(); }));
+                corps.appendChild(formulaire(d.item, item, function () { libelle(); change(); }, {
+                    exclusif: function (k) { tab.forEach(function (o) { if (o !== item) delete o[k]; }); change(); rendre(i); }
+                }));
                 det.appendChild(corps);
                 boite.appendChild(det);
             });
@@ -442,6 +516,7 @@
             RUBRIQUES.forEach(function (r) {
                 // pas encore en base : on part des valeurs d'origine du site
                 var v = copie(lignes[r.cle] != null ? lignes[r.cle] : (window.DEFAUT[r.defaut] || (r.racineListe ? [] : {})));
+                if (r.cle === 'relations') v = v.map(function (x) { var o = O.relation(x); delete o.dernier; return o; });
                 donnees[r.cle] = r.racineListe ? { liste: v } : v;
                 modifie[r.cle] = false;
             });

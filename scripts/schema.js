@@ -93,3 +93,17 @@ const graines = Object.keys(DEFAUT).map((cle) =>
 fs.mkdirSync(path.join(racine, 'supabase'), { recursive: true });
 fs.writeFileSync(path.join(racine, 'supabase', 'schema.sql'), entete + graines);
 console.log('supabase/schema.sql généré (' + Object.keys(DEFAUT).length + ' rubriques).');
+
+// Mise à jour pour une base déjà installée avec l'ancienne version du contenu :
+// REMPLACE fiche, noms et relations par les valeurs de départ (à ne lancer que si ces rubriques n'ont pas encore été modifiées dans le dashboard).
+const A_REMPLACER = ['fiche', 'noms', 'relations'];
+const maj = `-- ============================================================================
+--  PETITE MYGALE — mise à jour du contenu de départ (v2 : nom actuel, relations à avis datés)
+--  À lancer APRÈS schema.sql, SEULEMENT si tu n'as encore rien modifié dans le dashboard
+--  pour : Fiche & accueil, Nomenclature, Relations (ces trois rubriques sont remplacées).
+-- ============================================================================
+` + A_REMPLACER.map((cle) =>
+    `insert into public.mygale_contenus (cle, valeur) values ('${cle}', $json$${JSON.stringify(DEFAUT[cle], null, 1)}$json$::jsonb)\non conflict (cle) do update set valeur = excluded.valeur;\n`
+).join('\n');
+fs.writeFileSync(path.join(racine, 'supabase', 'mise-a-jour-v2.sql'), maj);
+console.log('supabase/mise-a-jour-v2.sql généré.');

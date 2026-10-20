@@ -77,14 +77,16 @@ create policy "mygale suppr admin" on storage.objects for delete to authenticate
 insert into public.mygale_contenus (cle, valeur) values ('fiche', $json${
  "clan": "Clan du Vent",
  "devise": "Un nom qui commence comme un défaut, et qui finit comme une promesse.",
+ "portrait": "mygale-moonlight.webp",
+ "accroche": "Apprentie du Clan du Vent, fille d'Éclat de Scarabée. Elle porte le poids d'un nom, et la promesse d'une rédemption que sa mère n'a pas eue.",
  "lignes": [
   {
    "label": "Rang",
-   "valeur": "Chaton"
+   "valeur": "Apprentie"
   },
   {
    "label": "Âge",
-   "valeur": "3 lunes"
+   "valeur": "6 lunes"
   },
   {
    "label": "Sexe",
@@ -111,7 +113,8 @@ insert into public.mygale_contenus (cle, valeur) values ('noms', $json$[
  {
   "etape": "Nom d'Apprenti",
   "nom": "Nuage de Mygale",
-  "periode": "6 à 12 lunes"
+  "periode": "6 à 12 lunes",
+  "actuel": true
  },
  {
   "etape": "Nom Adulte",
@@ -514,7 +517,7 @@ insert into public.mygale_contenus (cle, valeur) values ('genealogie', $json${
     {
      "nom": "Aucun partenaire",
      "statut": "vide",
-     "texte": "Elle n'a que 3 lunes ! L'avenir nous le dira."
+     "texte": "Elle n'a que 6 lunes ! L'avenir nous le dira."
     },
     {
      "nom": "Aucune descendance",
@@ -530,26 +533,50 @@ on conflict (cle) do nothing;
 insert into public.mygale_contenus (cle, valeur) values ('relations', $json$[
  {
   "nom": "Étoile d'Ocre",
-  "role": "Meneur du Clan du Vent (PNJ)",
-  "affinite": 1,
-  "respect": true,
-  "texte": "Il garde un œil sur Petite Mygale, car elle est l'enfant de l'ancienne guérisseuse, Éclat de Scarabée. Petite Mygale apprécie le meneur, elle aime bien lui poser des questions."
+  "role": "Meneur (PNJ)",
+  "clan": "Clan du Vent",
+  "avis": [
+   {
+    "lune": 3,
+    "affinite": 1,
+    "respect": true,
+    "texte": "Il garde un œil sur elle, car elle est l'enfant de l'ancienne guérisseuse, Éclat de Scarabée. Elle apprécie le meneur, elle aime bien lui poser des questions."
+   }
+  ]
  },
  {
   "nom": "Chant de Cigale",
-  "role": "Guérisseuse du Clan / Cousine (PJ)",
-  "affinite": 3,
+  "role": "Guérisseuse / Cousine (PJ)",
+  "clan": "Clan du Vent",
   "joueur": "@lavnd.13",
-  "texte": "Apprentie de sa mère et sa cousine éloignée, Petite Mygale est très à l'aise avec la féline ! Elle aime énormément passer du temps avec elle, dans sa tanière."
+  "avis": [
+   {
+    "lune": 3,
+    "affinite": 3,
+    "texte": "Apprentie de sa mère et sa cousine éloignée, elle est très à l'aise avec la féline ! Elle aime énormément passer du temps avec elle, dans sa tanière."
+   }
+  ]
  },
  {
   "nom": "Prestesse de la Perdrix",
   "role": "Mère adoptive (PNJ)",
-  "affinite": 1,
-  "mitige": true,
-  "texte": "Sa mère adoptive, elle l'apprécie bien qu'elle ait encore un peu de mal avec elle, après tout sa mère adoptive lui met énormément de pression sur ses épaules. Mais au fond, Mygale l'aime beaucoup."
+  "clan": "Clan du Vent",
+  "avis": [
+   {
+    "lune": 3,
+    "affinite": 1,
+    "mitige": true,
+    "texte": "Sa mère adoptive, elle l'apprécie bien qu'elle ait encore un peu de mal avec elle, après tout sa mère adoptive lui met énormément de pression sur ses épaules. Mais au fond, elle l'aime beaucoup."
+   }
+  ]
  }
 ]$json$::jsonb)
+on conflict (cle) do nothing;
+
+insert into public.mygale_contenus (cle, valeur) values ('fils', $json$[]$json$::jsonb)
+on conflict (cle) do nothing;
+
+insert into public.mygale_contenus (cle, valeur) values ('sante', $json$[]$json$::jsonb)
 on conflict (cle) do nothing;
 
 insert into public.mygale_contenus (cle, valeur) values ('galerie', $json$[
