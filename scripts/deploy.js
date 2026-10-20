@@ -31,6 +31,15 @@ else if (actuel !== DEPOT) lance(['remote', 'set-url', 'origin', DEPOT]);
 spawnSync('node', [path.join(__dirname, 'schema.js')], { cwd: racine, stdio: 'inherit' });
 fs.writeFileSync(path.join(racine, '.nojekyll'), '');
 
+// Numéro de version sur les css/js des pages : les navigateurs ne gardent jamais d'ancien fichier en cache
+const version = Date.now().toString(36);
+for (const page of fs.readdirSync(racine).filter((n) => n.endsWith('.html'))) {
+    const chemin = path.join(racine, page);
+    const html = fs.readFileSync(chemin, 'utf8');
+    const neuf = html.replace(/((?:css|js)\/[\w\/.-]+\.(?:css|js))(\?v=\w+)?"/g, '$1?v=' + version + '"');
+    if (neuf !== html) fs.writeFileSync(chemin, neuf);
+}
+
 // 4. Commit
 lance(['add', '-A'], 'Ajout des fichiers modifiés');
 const message = process.argv.slice(2).join(' ') || 'Mise à jour du site — ' + new Date().toLocaleString('fr-FR');
