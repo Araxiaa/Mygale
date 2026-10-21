@@ -15,7 +15,7 @@
         { id: 'elle', nom: 'Elle', icone: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-3.3 0-8 1.7-8 5v2h16v-2c0-3.3-4.7-5-8-5z',
           subs: [['noms', 'Ses noms'], ['caractere', 'Caractère'], ['physique', 'Physique'], ['sante', 'Santé']] },
         { id: 'histoire', nom: 'Histoire', icone: 'M5 3h11a3 3 0 0 1 3 3v15H8a3 3 0 0 1-3-3zm3 4v2h8V7zm0 4v2h8v-2z',
-          subs: [['chroniques', 'Chroniques'], ['fils', 'Fils RP']] },
+          subs: [['chroniques', 'Chroniques'], ['parcours', 'Parcours'], ['fils', 'Fils RP']] },
         { id: 'entourage', nom: 'Entourage', icone: 'M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8 13c-2.7 0-6 1.3-6 3.5V19h12v-2.5c0-2.2-3.3-3.5-6-3.5zm8 0c-.5 0-1 0-1.500.1 1.600.9 2.500 2.100 2.500 3.400V19h6v-2.500c0-2.200-3.300-3.500-7-3.500z',
           subs: [['lignee', 'Lignée'], ['relations', 'Relations']] },
         { id: 'galerie', nom: 'Galerie', icone: 'M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm2 12h12l-3.500-5-3 4-2-2.500z', subs: [['galerie', 'Galerie']] }
@@ -27,7 +27,40 @@
     function titre(h, sous) {
         return '<header class="entete"><h1>' + esc(h) + '</h1>' + (sous ? '<p>' + esc(sous) + '</p>' : '') + '</header>';
     }
-    function paras(liste) { return (liste || []).map(function (p) { return '<p>' + riche(p.texte) + '</p>'; }).join(''); }
+    // Blocs de texte : paragraphe (par défaut), intertitre, citation, encart, séparateur, image
+    function paras(liste) {
+        return (liste || []).map(function (p) {
+            switch (p.type) {
+                case 'intertitre': return '<h3 class="intertitre">' + riche(p.texte) + '</h3>';
+                case 'citation': return '<blockquote class="exergue">' + riche(p.texte) + '</blockquote>';
+                case 'encart': return '<aside class="encart">' + riche(p.texte) + '</aside>';
+                case 'separateur': return '<div class="ornement" aria-hidden="true"><span>✦</span></div>';
+                case 'image': return p.image ? '<figure class="figure"><img src="' + O.url(p.image) + '" alt="' + esc(p.texte || '') + '" loading="lazy" decoding="async">' + (p.texte ? '<figcaption>' + riche(p.texte) + '</figcaption>' : '') + '</figure>' : '';
+                default: return '<p>' + riche(p.texte) + '</p>';
+            }
+        }).join('');
+    }
+    function motscles(l) {
+        return l && l.length ? '<ul class="motscles" aria-label="En quelques mots">' + l.map(function (m) { return '<li>' + esc(m.texte) + '</li>'; }).join('') + '</ul>' : '';
+    }
+    function profil(l) {
+        if (!l || !l.length) return '';
+        return '<section class="profil"><h2 class="titre-section">Son profil</h2><div class="jauges-trait">' + l.map(function (j) {
+            var n = Math.max(0, Math.min(5, Number(j.niveau) || 0)), pts = '';
+            for (var i = 0; i < 5; i++) pts += '<i class="pt' + (i < n ? ' plein' : '') + '"></i>';
+            return '<div class="jauge"><span class="jauge-nom">' + esc(j.nom) + '</span><span class="pts" role="img" aria-label="' + n + ' sur 5">' + pts + '</span></div>';
+        }).join('') + '</div></section>';
+    }
+    function nuancier(l) {
+        if (!l || !l.length) return '';
+        return '<section><h2 class="titre-section">Palette du pelage</h2><ul class="nuancier">' + l.map(function (c) {
+            var hex = /^#[0-9a-f]{3,8}$/i.test(c.hex || '') ? c.hex : '#888888';
+            return '<li><span class="goutte" style="background:' + hex + '"></span><b>' + esc(c.nom) + '</b><small>' + esc(hex.toUpperCase()) + '</small></li>';
+        }).join('') + '</ul></section>';
+    }
+    function apercu(l) {
+        return l && l.length ? '<dl class="apercu">' + l.map(function (x) { return '<div><dt>' + esc(x.label) + '</dt><dd>' + esc(x.valeur) + '</dd></div>'; }).join('') + '</dl>' : '';
+    }
     function pliant(h, corps, ouvert) {
         return '<details class="pliant"' + (ouvert ? ' open' : '') + '><summary><span>' + esc(h) + '</span><i aria-hidden="true"></i></summary><div class="pliant-corps">' + corps + '</div></details>';
     }
@@ -88,7 +121,8 @@
         var explorer = '<section><h2 class="titre-section">Explorer</h2><div class="explorer">' +
             lien('elle/noms', 'Elle', 'Ses noms, son caractère, son physique et son historique de santé.') +
             lien('histoire/chroniques', 'Histoire', 'Les chapitres de sa vie et le suivi des fils de jeu de rôle.') +
-            lien('entourage/lignee', 'Entourage', 'Sa famille et l\'évolution de chacune de ses relations.') +
+            lien('histoire/parcours', 'Parcours', 'Toute sa vie en une frise, lune après lune.') +
+            lien('entourage/lignee', 'Entourage', 'Sa famille, ses relations et la toile qu\'elle tisse.') +
             lien('galerie/galerie', 'Galerie', 'Illustrations, croquis et designs.') + '</div></section>';
 
         return hero + cartes + explorer;
@@ -114,7 +148,8 @@
     function caractere(c) {
         var p = c.personnalite || {};
         return titre('Caractère & personnalité') +
-            '<div class="texte lettrine">' + paras(p.paragraphes) + '</div>' +
+            (p.citation ? '<blockquote class="exergue grande">' + riche(p.citation) + '</blockquote>' : '') + motscles(p.motscles) + profil(p.jauges) +
+            '<h2 class="titre-section">Qui elle est</h2><div class="texte lettrine">' + paras(p.paragraphes) + '</div>' +
             '<div class="pliants">' +
             pliant('Qualités', traits(p.qualites, 'positif'), true) +
             pliant('Défauts', traits(p.defauts, 'negatif')) +
@@ -129,8 +164,8 @@
         var marques = '<ul class="traits">' + (a.marques || []).map(function (m) {
             return '<li><h3>' + esc(m.nom) + '</h3><p class="vide">' + esc(m.texte) + '</p>' + (m.note ? '<small>' + esc(m.note) + '</small>' : '') + '</li>';
         }).join('') + '</ul>';
-        return titre('Apparence physique') +
-            '<div class="texte lettrine">' + paras(a.paragraphes) + '</div>' +
+        return titre('Apparence physique') + apercu(a.apercu) + nuancier(a.palette) +
+            '<h2 class="titre-section">En détail</h2><div class="texte lettrine">' + paras(a.paragraphes) + '</div>' +
             '<div class="pliants">' + pliant('Points forts', traits(a.forts, 'positif'), true) + pliant('Points faibles', traits(a.faibles, 'negatif')) +
             pliant('Marques & attributs', marques) + '</div>' +
             '<a class="carte-lien large" href="#elle/sante"><h3>Historique de santé</h3><p>Blessures, maladies, soins et séquelles.</p><span aria-hidden="true">→</span></a>';
@@ -175,6 +210,51 @@
         return titre('Histoire & chroniques') + '<div class="puces">' + nav + '</div>' +
             '<article class="chapitre' + (x.avenir ? ' avenir' : '') + '"><header><h2>Chapitre ' + (CHAP.i + 1) + ' · ' + esc(x.titre) + '</h2><span class="age">Âge : ' + esc(x.age) + '</span></header>' +
             '<div class="texte">' + paras(x.paragraphes) + '</div>' + (x.citation ? '<blockquote>' + riche(x.citation) + '</blockquote>' : '') + '</article>';
+    }
+
+    /* ---------- Parcours : frise de sa vie, assemblée toute seule ---------- */
+    var PARC = { f: 'tout' };
+    function premierNombre(s) { var m = String(s || '').match(/\d+(?:[.,]\d+)?/); return m ? parseFloat(m[0].replace(',', '.')) : null; }
+    var TYPES_PARC = { chapitre: 'Chapitre', nom: 'Nom', fil: 'Fil RP', sante: 'Santé', relation: 'Relation' };
+    function evenements(c) {
+        var ev = [], posActuel = 0;
+        (c.noms || []).forEach(function (n, i) { if (n.actuel) posActuel = i; });
+        ((c.histoire || {}).chapitres || []).forEach(function (x, i) {
+            var l = premierNombre(x.age); if (l == null) return;
+            ev.push({ l: l, type: 'chapitre', titre: 'Chapitre ' + (i + 1) + ' · ' + x.titre, texte: x.age ? 'Âge : ' + x.age : '', lien: '#histoire/chroniques' });
+        });
+        (c.noms || []).forEach(function (n, i) {
+            var l = premierNombre(n.periode);
+            if (l == null || i === 0 || i > posActuel) return;   // seulement les noms déjà portés
+            ev.push({ l: l, type: 'nom', titre: n.etape + ' : ' + n.nom, texte: n.actuel ? 'Son nom actuel' : '', lien: '#elle/noms' });
+        });
+        (c.fils || []).forEach(function (x) {
+            if (O.nombre(x.lune) == null) return;
+            ev.push({ l: O.nombre(x.lune), type: 'fil', titre: x.titre, texte: x.description || '', badge: x.enCours ? 'En cours' : '', lien: '#histoire/fils' });
+        });
+        (c.sante || []).forEach(function (x) {
+            if (O.nombre(x.lune) == null) return;
+            ev.push({ l: O.nombre(x.lune), type: 'sante', titre: x.titre, texte: (x.type === 'maladie' ? 'Maladie' : 'Blessure') + (x.statut === 'en_cours' ? ' · en cours' : ''), lien: '#elle/sante' });
+            if (O.nombre(x.fin) != null) ev.push({ l: O.nombre(x.fin), type: 'sante', titre: 'Guérison : ' + x.titre, texte: '', lien: '#elle/sante' });
+        });
+        rels(c).forEach(function (r) {
+            r.avis.forEach(function (a, i) {
+                if (O.nombre(a.lune) == null) return;
+                ev.push({ l: O.nombre(a.lune), type: 'relation', titre: (i ? 'Évolution : ' : 'Rencontre : ') + r.nom, texte: '', coeurs: O.coeursAvis(a, r), lien: '#entourage/relations' });
+            });
+        });
+        return ev.sort(function (a, b) { return a.l - b.l; });
+    }
+    function parcours(c) {
+        var tous = evenements(c);
+        var liste = tous.filter(function (e) { return PARC.f === 'tout' || e.type === PARC.f; });
+        var presents = {}; tous.forEach(function (e) { presents[e.type] = true; });
+        var filtres = puces([['tout', 'Tout']].concat(Object.keys(TYPES_PARC).filter(function (k) { return presents[k]; }).map(function (k) { return [k, TYPES_PARC[k]]; })), PARC.f, 'parc');
+        var corps = liste.length ? '<ol class="parcours">' + liste.map(function (e, i) {
+            return '<li class="p-' + e.type + '"><span class="p-lune">' + esc(O.lune(e.l)) + '</span><a class="p-carte" href="' + e.lien + '"><span class="p-type">' + TYPES_PARC[e.type] + (e.badge ? ' · ' + esc(e.badge) : '') + '</span>' +
+                '<strong>' + esc(e.titre) + '</strong>' + (e.coeurs || '') + (e.texte ? '<span class="p-texte">' + esc(e.texte.length > 120 ? e.texte.slice(0, 118) + '…' : e.texte) + '</span>' : '') + '</a></li>';
+        }).join('') + '</ol>' : vide('Rien à afficher pour le moment.');
+        return titre('Parcours', 'Toute sa vie en une frise : chapitres, fils, santé et relations, lune après lune') + filtres + corps;
     }
 
     var FIL = { f: 'tous' };
@@ -222,7 +302,7 @@
         }).join('');
     }
 
-    var REL = { clan: '', aff: 'tous', q: '' };
+    var REL = { clan: '', aff: 'tous', q: '', vue: 'liste' };
     function rels(c) { return (c.relations || []).map(O.relation); }
     function evolutions(c) {
         var out = [];
@@ -244,15 +324,52 @@
     function relationsFiltres(c) {
         var clans = [];
         rels(c).forEach(function (r) { var k = r.clan || 'Sans clan'; if (clans.indexOf(k) < 0) clans.push(k); });
-        return (clans.length > 1 ? puces([['', 'Tous les clans']].concat(clans.map(function (k) { return [k, k]; })), REL.clan, 'clan') : '') +
+        return puces([['liste', 'Liste'], ['toile', 'Toile']], REL.vue, 'vue') +
+            (clans.length > 1 ? puces([['', 'Tous les clans']].concat(clans.map(function (k) { return [k, k]; })), REL.clan, 'clan') : '') +
             puces([['tous', 'Toutes'], ['positif', 'Appréciées'], ['neutre', 'Neutres'], ['negatif', 'Aversion'], ['decede', 'Décédées']], REL.aff, 'aff');
     }
-    function relationsListe(c) {
+    function relationsFiltrees(c) {
         var q = REL.q.trim().toLowerCase();
-        var liste = rels(c).filter(function (r) {
+        return rels(c).filter(function (r) {
             return (!REL.clan || (r.clan || 'Sans clan') === REL.clan) && (REL.aff === 'tous' || categorie(r) === REL.aff) &&
                 (!q || (r.nom + ' ' + (r.role || '') + ' ' + (r.clan || '') + ' ' + (r.joueur || '')).toLowerCase().indexOf(q) >= 0);
         });
+    }
+
+    // La toile : elle est au centre, chaque chat est accroché à elle par un fil.
+    // Plus le lien est fort, plus le chat est proche du centre ; la couleur du fil dit la nature du lien.
+    function toile(c) {
+        var liste = relationsFiltrees(c).sort(function (a, b) { return String(a.clan || '').localeCompare(String(b.clan || '')); });
+        if (!liste.length) return vide('Aucune relation ne correspond.');
+        var cx = 320, cy = 320, N = liste.length;
+        var s = '<svg class="toile-rel" viewBox="0 0 640 640" role="group" aria-label="Toile des relations : plus un chat est proche du centre, plus le lien est fort">';
+        [90, 155, 220, 285].forEach(function (r) { s += '<circle class="anneau" cx="' + cx + '" cy="' + cy + '" r="' + r + '"/>'; });
+        for (var k = 0; k < Math.max(N, 8); k++) {
+            var t = -Math.PI / 2 + k * 2 * Math.PI / Math.max(N, 8);
+            s += '<line class="rayon" x1="' + cx + '" y1="' + cy + '" x2="' + (cx + 300 * Math.cos(t)).toFixed(1) + '" y2="' + (cy + 300 * Math.sin(t)).toFixed(1) + '"/>';
+        }
+        liste.forEach(function (r, i) {
+            var a = r.dernier.affinite, cat = categorie(r);
+            var rayon = typeof a === 'number' ? 185 - a * 28 + (r.mort ? 30 : 0) : 235;
+            var ang = -Math.PI / 2 + i * 2 * Math.PI / N;
+            var x = cx + rayon * Math.cos(ang), y = cy + rayon * Math.sin(ang);
+            var epaisseur = typeof a === 'number' ? 1 + Math.abs(a) * .8 : 1;
+            var nom = r.nom.length > 16 ? r.nom.slice(0, 15) + '…' : r.nom;
+            s += '<g class="noeud ' + cat + '" data-rel="' + esc(r.nom) + '" tabindex="0" role="button" aria-label="' + esc(r.nom) + ' : voir l\'évolution" style="--i:' + i + '">' +
+                '<line class="fil-t" x1="' + cx + '" y1="' + cy + '" x2="' + x.toFixed(1) + '" y2="' + y.toFixed(1) + '" stroke-width="' + epaisseur.toFixed(1) + '" pathLength="1"/>' +
+                '<g class="bulle" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')"><circle r="25" class="fond-n"/>' +
+                '<text class="ini" y="6" text-anchor="middle">' + esc(r.nom.charAt(0)) + '</text>' +
+                (r.photo ? '<clipPath id="cp' + i + '"><circle r="22"/></clipPath><image href="' + O.url(r.photo) + '" x="-22" y="-22" width="44" height="44" clip-path="url(#cp' + i + ')" preserveAspectRatio="xMidYMid slice"/>' : '') +
+                '<circle r="25" class="bord"/><text class="etiq" y="42" text-anchor="middle">' + esc(nom) + '</text></g></g>';
+        });
+        s += '<g class="centre"><circle cx="' + cx + '" cy="' + cy + '" r="34"/><use href="#araignee" x="' + (cx - 21) + '" y="' + (cy - 21) + '" width="42" height="42"/></g></svg>' +
+            '<p class="note-toile">Plus un chat est proche d\'elle, plus le lien est fort. <span class="l-pos">■</span> apprécié <span class="l-neu">■</span> neutre <span class="l-neg">■</span> aversion. Touche un chat pour voir l\'évolution.</p>';
+        return s;
+    }
+
+    function relationsListe(c) {
+        if (REL.vue === 'toile') return toile(c);
+        var liste = relationsFiltrees(c);
         if (!liste.length) return vide('Aucune relation ne correspond.');
         return '<ul class="fils-rel">' + liste.map(function (r) {
             var i = (c.relations || []).map(O.relation).indexOf(r);
@@ -308,7 +425,7 @@
     }
 
     var VUES = { 'accueil/accueil': accueil, 'elle/noms': noms, 'elle/caractere': caractere, 'elle/physique': physique, 'elle/sante': sante,
-        'histoire/chroniques': chroniques, 'histoire/fils': fils, 'entourage/lignee': lignee, 'entourage/relations': relations, 'galerie/galerie': galerie };
+        'histoire/chroniques': chroniques, 'histoire/parcours': parcours, 'histoire/fils': fils, 'entourage/lignee': lignee, 'entourage/relations': relations, 'galerie/galerie': galerie };
 
     /* ---------- Routage ---------- */
     function route() {
@@ -353,6 +470,7 @@
         vue.className = 'vue v-' + r.page.id;
         vue.innerHTML = VUES[r.cle](c) + (r.cle === 'accueil/accueil' ? '' : pagination(r.cle));
         O.avatars(vue);
+        reveler(vue);
         if (saut) {
             $('principal').focus({ preventScroll: true });
             window.scrollTo({ top: 0 });
@@ -366,19 +484,109 @@
     $('principal').addEventListener('click', function (e) {
         var b;
         if ((b = e.target.closest('[data-fil]'))) { FIL.f = b.dataset.fil; afficher(); return; }
+        if ((b = e.target.closest('[data-parc]'))) { PARC.f = b.dataset.parc; afficher(); return; }
         if ((b = e.target.closest('[data-sante]'))) { SANTE.f = b.dataset.sante; afficher(); return; }
         if ((b = e.target.closest('[data-chap]'))) { CHAP.i = Number(b.dataset.chap); afficher(); return; }
+        if ((b = e.target.closest('[data-vue]'))) { REL.vue = b.dataset.vue; majRelations(); return; }
         if ((b = e.target.closest('[data-clan]'))) { REL.clan = b.dataset.clan; majRelations(); return; }
         if ((b = e.target.closest('[data-aff]'))) { REL.aff = b.dataset.aff; majRelations(); return; }
         if ((b = e.target.closest('[data-rel]'))) { fenetreRelation(b.dataset.rel); return; }
-        if ((b = e.target.closest('[data-img]')) && DONNEES) {
-            var it = DONNEES.galerie[Number(b.dataset.img)], v = $('visionneuse');
-            v.querySelector('img').src = O.url(it.fichier);
-            v.querySelector('img').alt = it.alt || it.titre || '';
-            v.querySelector('p').textContent = (it.titre || '') + (it.auteur ? ' — ' + it.auteur : '');
-            if (v.showModal) v.showModal(); else v.setAttribute('open', '');
-        }
+        if ((b = e.target.closest('[data-img]')) && DONNEES) ouvrirImage(Number(b.dataset.img), true);
+        if ((b = e.target.closest('figure.figure img'))) ouvrirUrl(b.src, b.alt);
     });
+    // Touche Entrée / Espace sur un chat de la toile
+    $('principal').addEventListener('keydown', function (e) {
+        var n = e.target.closest && e.target.closest('g[data-rel]');
+        if (n && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); fenetreRelation(n.dataset.rel); }
+    });
+
+    /* ---------- Visionneuse d'images (flèches ← → du clavier ou boutons) ---------- */
+    var IMG = { i: 0 };
+    function ouvrirUrl(src, legende) {
+        var v = $('visionneuse');
+        v.querySelector('img').src = src;
+        v.querySelector('img').alt = legende || '';
+        v.querySelector('p').textContent = legende || '';
+        v.classList.add('seule');
+        if (v.showModal) { if (!v.open) v.showModal(); } else v.setAttribute('open', '');
+    }
+    function ouvrirImage(i, ouvrir) {
+        var g = (DONNEES && DONNEES.galerie) || [];
+        if (!g.length) return;
+        IMG.i = (i + g.length) % g.length;
+        var it = g[IMG.i], v = $('visionneuse');
+        v.classList.remove('seule');
+        v.querySelector('img').src = O.url(it.fichier);
+        v.querySelector('img').alt = it.alt || it.titre || '';
+        v.querySelector('p').textContent = (it.titre || '') + (it.auteur ? ' — ' + it.auteur : '') + '  ·  ' + (IMG.i + 1) + ' / ' + g.length;
+        if (ouvrir) { if (v.showModal) v.showModal(); else v.setAttribute('open', ''); }
+    }
+    $('visionneuse').addEventListener('click', function (e) {
+        if (e.target.closest('.prec')) ouvrirImage(IMG.i - 1);
+        else if (e.target.closest('.suiv')) ouvrirImage(IMG.i + 1);
+    });
+    document.addEventListener('keydown', function (e) {
+        if (!$('visionneuse').open || $('visionneuse').classList.contains('seule')) return;
+        if (e.key === 'ArrowLeft') ouvrirImage(IMG.i - 1);
+        if (e.key === 'ArrowRight') ouvrirImage(IMG.i + 1);
+    });
+
+    /* ---------- Animations : apparition au défilement, progression de lecture ---------- */
+    var CIBLES = '.entete, .exergue, .motscles li, .jauge, .nuancier li, .apercu > div, .pliant, .traits li, .frise li, .membre, .relation, .fil-rp, .chrono > li, ' +
+        '.parcours > li, .galerie li, .mini, .carte-lien, .texte > *, .groupe-lune, .chapitre > header, .recent, .etat, .hero-texte > *, .titre-section, .legende, .puces';
+    var OBS = null;
+    function reveler(racine) {
+        if (!('IntersectionObserver' in window) || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+        if (OBS) OBS.disconnect();
+        OBS = new IntersectionObserver(function (entrees) {
+            entrees.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('vu'); OBS.unobserve(en.target); } });
+        }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
+        Array.prototype.forEach.call(racine.querySelectorAll(CIBLES), function (el) {
+            var frere = Array.prototype.indexOf.call(el.parentNode.children, el);
+            el.style.setProperty('--i', Math.min(frere, 8));
+            el.classList.add('rv');
+            OBS.observe(el);
+        });
+        // Filet de sécurité : si l'observateur n'a rien montré (onglet en arrière-plan…), on affiche ce qui est à l'écran
+        clearTimeout(reveler.filet);
+        reveler.filet = setTimeout(function () {
+            Array.prototype.forEach.call(racine.querySelectorAll('.rv:not(.vu)'), function (el) {
+                if (el.getBoundingClientRect().top < window.innerHeight) { el.classList.add('vu'); if (OBS) OBS.unobserve(el); }
+            });
+        }, 1500);
+    }
+
+    var barre = $('progression'), remonter = $('remonter'), attente = false;
+    function defilement() {
+        attente = false;
+        var h = document.documentElement, max = h.scrollHeight - h.clientHeight;
+        barre.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ')';
+        remonter.classList.toggle('visible', window.scrollY > 700);
+    }
+    window.addEventListener('scroll', function () { if (!attente) { attente = true; requestAnimationFrame(defilement); } }, { passive: true });
+    remonter.addEventListener('click', function () { window.scrollTo({ top: 0 }); });
+
+    // Le portrait suit doucement le pointeur (souris uniquement)
+    $('principal').addEventListener('pointermove', function (e) {
+        if (e.pointerType !== 'mouse') return;
+        var h = e.target.closest && e.target.closest('.hero-image'), cadre = document.querySelector('.cadre');
+        if (!cadre) return;
+        if (!h) { cadre.style.removeProperty('--rx'); cadre.style.removeProperty('--ry'); return; }
+        var r = h.getBoundingClientRect();
+        cadre.style.setProperty('--ry', (((e.clientX - r.left) / r.width - .5) * 8).toFixed(2) + 'deg');
+        cadre.style.setProperty('--rx', (((e.clientY - r.top) / r.height - .5) * -8).toFixed(2) + 'deg');
+    });
+
+    /* ---------- Thème : nuit / aube ---------- */
+    $('theme').addEventListener('click', function () {
+        var aube = document.documentElement.getAttribute('data-theme') !== 'aube';
+        document.documentElement.setAttribute('data-theme', aube ? 'aube' : 'nuit');
+        try { localStorage.setItem('mygale-theme', aube ? 'aube' : 'nuit'); } catch (e) {}
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute('content', aube ? '#fbf4e8' : '#0d1426');
+        $('theme').setAttribute('aria-pressed', aube);
+    });
+    $('theme').setAttribute('aria-pressed', document.documentElement.getAttribute('data-theme') === 'aube');
     $('principal').addEventListener('input', function (e) {
         if (e.target.id === 'rel-q') { REL.q = e.target.value; $('rel-liste').innerHTML = relationsListe(DONNEES); O.avatars($('rel-liste')); }
     });

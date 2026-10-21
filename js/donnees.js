@@ -15,7 +15,9 @@
     }
     function fusion(base) {
         var o = {};
-        Object.keys(window.DEFAUT).forEach(function (k) { o[k] = base[k] != null ? base[k] : window.DEFAUT[k]; });
+        Object.keys(window.DEFAUT).forEach(function (k) {
+            o[k] = base[k] != null ? window.Outils.completer(base[k], window.DEFAUT[k]) : window.DEFAUT[k];
+        });
         return o;
     }
 

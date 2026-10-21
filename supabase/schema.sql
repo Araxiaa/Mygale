@@ -137,6 +137,50 @@ insert into public.mygale_contenus (cle, valeur) values ('noms', $json$[
 on conflict (cle) do nothing;
 
 insert into public.mygale_contenus (cle, valeur) values ('personnalite', $json${
+ "citation": "Une féline qui aspire à la connexion, mais qui a appris, très tôt, que les choses qu'on aime finissent toujours par disparaître.",
+ "motscles": [
+  {
+   "texte": "Curieuse"
+  },
+  {
+   "texte": "Méfiante"
+  },
+  {
+   "texte": "Têtue"
+  },
+  {
+   "texte": "Résiliente"
+  },
+  {
+   "texte": "Charismatique"
+  }
+ ],
+ "jauges": [
+  {
+   "nom": "Curiosité",
+   "niveau": 5
+  },
+  {
+   "nom": "Ténacité",
+   "niveau": 5
+  },
+  {
+   "nom": "Méfiance",
+   "niveau": 4
+  },
+  {
+   "nom": "Émotivité",
+   "niveau": 4
+  },
+  {
+   "nom": "Loyauté envers les siens",
+   "niveau": 4
+  },
+  {
+   "nom": "Ouverture aux autres",
+   "niveau": 2
+  }
+ ],
  "paragraphes": [
   {
    "texte": "<b>Petite Mygale est une contradiction vivante.</b> Elle veut aller vers les autres, apprendre d'eux, les comprendre, et pourtant, elle maintient toujours ce petit pas en arrière, cette distance imperceptible que peu arrivent à franchir. C'est peut-être ce qui la définit le mieux : une féline qui aspire à la connexion, mais qui a appris, très tôt, que les choses qu'on aime finissent toujours par disparaître."
@@ -248,6 +292,62 @@ insert into public.mygale_contenus (cle, valeur) values ('personnalite', $json${
 on conflict (cle) do nothing;
 
 insert into public.mygale_contenus (cle, valeur) values ('apparence', $json${
+ "apercu": [
+  {
+   "label": "Pelage",
+   "valeur": "Bleu fumé, ticking sablé"
+  },
+  {
+   "label": "Yeux",
+   "valeur": "Ambre chaud, en amande"
+  },
+  {
+   "label": "Signes distinctifs",
+   "valeur": "Bout de queue et tache de poitrail blancs"
+  },
+  {
+   "label": "Silhouette",
+   "valeur": "Longiligne, fine, légère"
+  },
+  {
+   "label": "Taille adulte",
+   "valeur": "Moyenne"
+  }
+ ],
+ "palette": [
+  {
+   "nom": "Bleu fumé clair",
+   "hex": "#9a9aa8"
+  },
+  {
+   "nom": "Bleu fumé profond",
+   "hex": "#777790"
+  },
+  {
+   "nom": "Sable crème",
+   "hex": "#e8d6bd"
+  },
+  {
+   "nom": "Blanc crème (queue, poitrail)",
+   "hex": "#fff3e4"
+  },
+  {
+   "nom": "Sable gris",
+   "hex": "#cfc1ae"
+  },
+  {
+   "nom": "Taupe (oreilles)",
+   "hex": "#98877b"
+  },
+  {
+   "nom": "Ambre (yeux)",
+   "hex": "#d09a4e"
+  },
+  {
+   "nom": "Brun ambré (pupilles)",
+   "hex": "#6b4e26"
+  }
+ ],
  "paragraphes": [
   {
    "texte": "Petite Mygale a un corps qu'on qualifierait de <b>longiligne, fin, souple, léger</b>. Pourtant, si on regarde de plus près, ce n'est pas toute l'histoire. On distingue des muscles, discrets mais présents, notamment sur le poitrail et les pattes. Elle n'est pas purement longiligne, après tout, elle a hérité de ses deux parents. Elle possède une longue queue, fine et souple, qu'elle aime laisser balancer derrière elle avec une nonchalance toute naturelle."

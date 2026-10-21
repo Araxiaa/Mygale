@@ -6,9 +6,25 @@
         return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    // Texte avec mise en forme minimale : seuls <b>, <i>, <em>, <strong> sont conservés
+    // Texte avec mise en forme minimale (rien d'autre n'est jamais interprété) :
+    //   **gras**   *italique*   ==surligné==   {{murmure}}   (et, comme avant, <b> <i> <em> <strong>)
     function riche(t) {
-        return esc(t).replace(/&lt;(\/?)(b|i|em|strong)&gt;/g, '<$1$2>');
+        return esc(t)
+            .replace(/&lt;(\/?)(b|i|em|strong)&gt;/g, '<$1$2>')
+            .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+            .replace(/(^|[^*])\*([^*\n]+?)\*(?!\*)/g, '$1<em>$2</em>')
+            .replace(/==(.+?)==/g, '<mark>$1</mark>')
+            .replace(/\{\{(.+?)\}\}/g, '<span class="murmure">$1</span>');
+    }
+
+    // Complète une rubrique venue de la base avec les champs ajoutés depuis (jamais l'inverse) :
+    // un champ absent prend la valeur de départ, un champ présent (même vide) est respecté.
+    function completer(valeur, defaut) {
+        if (!valeur || !defaut || typeof valeur !== 'object' || typeof defaut !== 'object' || Array.isArray(valeur) || Array.isArray(defaut)) return valeur;
+        var o = {};
+        Object.keys(defaut).forEach(function (k) { o[k] = defaut[k]; });
+        Object.keys(valeur).forEach(function (k) { o[k] = valeur[k]; });
+        return o;
     }
 
     // Nom de fichier -> adresse (https://… tel quel, sinon dossier assets/photos/)
@@ -114,7 +130,7 @@
     }
 
     window.Outils = {
-        esc: esc, riche: riche, url: url, miniature: miniature, avatar: avatar, avatars: avatars, icone: icone, coeurs: coeurs,
+        esc: esc, riche: riche, completer: completer, url: url, miniature: miniature, avatar: avatar, avatars: avatars, icone: icone, coeurs: coeurs,
         nombre: nombre, lune: lune, relation: relation, coeursAvis: coeursAvis, courbe: courbe
     };
 })();

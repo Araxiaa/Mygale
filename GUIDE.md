@@ -39,6 +39,26 @@ On ajoute, modifie, déplace, supprime ; les images envoyées sont allégées au
   relation : ouvre le chat → « Ajouter un avis » avec la lune et les cœurs du moment. Le site en tire la courbe
   d'évolution, les flèches ▲▼ et « Derniers changements ».
 
+## Rendre les textes plus vivants
+
+Dans le dashboard, chaque zone de texte a une barre **Gras · Italique · Surligné · Murmure** (ou tape directement
+`**gras**`, `*italique*`, `==surligné==`, `{{murmure}}`) avec un aperçu en direct.
+Dans les listes « Description globale », « Texte » des chapitres, etc., chaque bloc a un **type** :
+Paragraphe · Intertitre · Citation mise en valeur · Encart « À retenir » · Image (avec légende) · Séparateur ✦.
+Alterner les types aère un long texte. Pages enrichies :
+- **Personnalité** : citation d'ouverture, mots-clés, jauges (profil sur 5, qui se remplissent à l'apparition).
+- **Physique** : « en un coup d'œil » et **palette du pelage** (goutte de couleur + code).
+- **Parcours** (Histoire) : frise de sa vie **assemblée toute seule** à partir des chapitres, noms portés, fils RP,
+  santé et relations (rien à saisir de plus ; il suffit de renseigner les lunes).
+- **Relations** : bouton **Toile** (le réseau en toile d'araignée : plus un chat est proche d'elle, plus le lien est fort).
+- **Galerie** : flèches ← → du clavier et boutons dans l'agrandissement.
+
+Le bouton ☾/☀ de l'en-tête bascule entre le thème **Nuit** et le thème **Aube** (clair) ; le choix est mémorisé.
+Les apparitions au défilement, la barre de progression de lecture et le bouton « remonter » se coupent tout seuls
+si l'appareil demande moins d'animations.
+Les champs ajoutés plus tard (mots-clés, jauges, palette…) apparaissent sur le site avec leurs valeurs de départ
+sans rien relancer dans Supabase ; une fois enregistrés dans le dashboard, ils sont modifiables à volonté.
+
 ## Navigation du site
 
 Barre du haut (en bas sur téléphone) : Accueil · Elle (noms, caractère, physique, santé) · Histoire (chroniques,

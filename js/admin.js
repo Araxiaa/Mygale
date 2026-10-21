@@ -20,11 +20,20 @@
 
     var NOM_TEXTE = [{ k: 'nom', t: 'text', l: 'Titre' }, { k: 'texte', t: 'area', l: 'Texte' }];
     function coupe(s) { s = s || ''; return s.replace(/<[^>]+>/g, '').slice(0, 70) + (s.length > 70 ? '…' : ''); }
+    var TYPES_BLOC = [['', 'Paragraphe'], ['intertitre', 'Intertitre (petit titre)'], ['citation', 'Citation mise en valeur'],
+        ['encart', 'Encart « À retenir »'], ['image', 'Image'], ['separateur', 'Séparateur ✦']];
     function PARAGRAPHES(cle, libelle) {
         return {
-            k: cle, t: 'liste', l: libelle, ajout: 'Ajouter un paragraphe',
-            lib: function (o) { return coupe(o.texte); },
-            item: [{ k: 'texte', t: 'area', l: 'Paragraphe', aide: 'Mise en gras : <b>texte</b>' }]
+            k: cle, t: 'liste', l: libelle, ajout: 'Ajouter un bloc de texte',
+            lib: function (o) {
+                var t = TYPES_BLOC.filter(function (x) { return x[0] === (o.type || ''); })[0];
+                return (o.type ? '[' + t[1].split(' ')[0] + '] ' : '') + (o.type === 'separateur' ? '✦ ✦ ✦' : coupe(o.texte || (o.image ? '(image)' : '')));
+            },
+            item: [
+                { k: 'type', t: 'select', l: 'Type de bloc', opts: TYPES_BLOC, aide: 'Intertitres, citations et encarts aèrent un long texte.' },
+                { k: 'texte', t: 'area', l: 'Texte', si: { k: 'type', pas: ['separateur'] } },
+                { k: 'image', t: 'image', l: 'Image (le texte devient sa légende)', si: { k: 'type', est: ['image'] } }
+            ]
         };
     }
     function TRAITS(cle, libelle, ajout) {
@@ -73,6 +82,10 @@
             cle: 'personnalite', nom: 'Personnalité', defaut: 'personnalite',
             aide: 'Description, qualités, défauts, goûts, peurs, habitudes.',
             champs: [
+                { k: 'citation', t: 'area', l: 'Citation d\'ouverture', aide: 'Grande phrase mise en valeur en haut de la page' },
+                { k: 'motscles', t: 'liste', l: 'Mots-clés (en un coup d\'œil)', ajout: 'Ajouter un mot', lib: function (o) { return o.texte; }, item: [{ k: 'texte', t: 'text', l: 'Mot' }] },
+                { k: 'jauges', t: 'liste', l: 'Son profil (jauges)', ajout: 'Ajouter une jauge', lib: function (o) { return o.nom + ' (' + (o.niveau == null ? 0 : o.niveau) + '/5)'; },
+                  item: [{ k: 'nom', t: 'text', l: 'Trait' }, { k: 'niveau', t: 'select', num: true, l: 'Niveau', opts: [[0, '0 sur 5'], [1, '1 sur 5'], [2, '2 sur 5'], [3, '3 sur 5'], [4, '4 sur 5'], [5, '5 sur 5']] }] },
                 PARAGRAPHES('paragraphes', 'Description globale'),
                 TRAITS('qualites', 'Qualités', 'Ajouter une qualité'),
                 TRAITS('defauts', 'Défauts', 'Ajouter un défaut'),
@@ -87,6 +100,10 @@
             cle: 'apparence', nom: 'Apparence', defaut: 'apparence',
             aide: 'Description physique, points forts et faibles, marques.',
             champs: [
+                { k: 'apercu', t: 'liste', l: 'En un coup d\'œil', ajout: 'Ajouter une ligne', lib: function (o) { return o.label + ' : ' + (o.valeur || ''); },
+                  item: [{ k: 'label', t: 'text', l: 'Intitulé', aide: 'Ex. Pelage' }, { k: 'valeur', t: 'text', l: 'Valeur' }] },
+                { k: 'palette', t: 'liste', l: 'Palette du pelage', ajout: 'Ajouter une couleur', lib: function (o) { return o.nom + ' ' + (o.hex || ''); },
+                  item: [{ k: 'nom', t: 'text', l: 'Nom de la couleur' }, { k: 'hex', t: 'couleur', l: 'Couleur' }] },
                 PARAGRAPHES('paragraphes', 'Description globale'),
                 TRAITS('forts', 'Points forts', 'Ajouter un point fort'),
                 TRAITS('faibles', 'Points faibles', 'Ajouter un point faible'),
@@ -255,6 +272,16 @@
     function formulaire(defs, obj, change, ctx) {
         var corps = h('div', { class: 'grille-champs' });
         var conteneur = h('div');
+        var conditionnels = [];
+        function majVis() {
+            conditionnels.forEach(function (x) {
+                var v = obj[x.d.si.k] || '';
+                var ok = x.d.si.est ? x.d.si.est.indexOf(v) >= 0 : x.d.si.pas.indexOf(v) < 0;
+                x.champ.style.display = ok ? '' : 'none';
+            });
+        }
+        var changeExt = change;
+        change = function () { changeExt(); majVis(); };
 
         defs.forEach(function (d) {
             var id = 'c' + (++compteur);
@@ -282,9 +309,12 @@
             } else {
                 var saisie;
                 if (d.t === 'area') {
-                    saisie = h('textarea', { id: id });
-                    saisie.value = obj[d.k] == null ? '' : obj[d.k];
-                    saisie.addEventListener('input', function () { fixer(obj, d.k, saisie.value); change(); });
+                    saisie = zoneTexte(id, d, obj, change);
+                } else if (d.t === 'couleur') {
+                    saisie = h('input', { type: 'color', id: id, class: 'saisie-couleur' });
+                    saisie.value = /^#[0-9a-f]{6}$/i.test(obj[d.k] || '') ? obj[d.k] : '#888888';
+                    saisie.addEventListener('input', function () { obj[d.k] = saisie.value; change(); });
+                    if (!obj[d.k]) obj[d.k] = saisie.value;
                 } else if (d.t === 'select') {
                     saisie = h('select', { id: id }, d.opts.map(function (o) { return h('option', { value: String(o[0]), text: o[1] }); }));
                     saisie.value = obj[d.k] == null ? '' : String(obj[d.k]);
@@ -314,11 +344,41 @@
                 champ = h('div', { class: 'champ' }, enfants);
                 if (d.t === 'area') champ.style.gridColumn = '1 / -1';
             }
+            if (d.si) conditionnels.push({ d: d, champ: champ });
             corps.appendChild(champ);
         });
 
         if (corps.childNodes.length) conteneur.appendChild(corps);
+        majVis();
         return conteneur;
+    }
+
+    // Zone de texte : barre de mise en forme + aperçu en direct
+    function zoneTexte(id, d, obj, change) {
+        var ta = h('textarea', { id: id });
+        var apercu = h('div', { class: 'apercu-riche', 'aria-label': 'Aperçu' });
+        ta.value = obj[d.k] == null ? '' : obj[d.k];
+        function maj() {
+            apercu.innerHTML = O.riche(ta.value);
+            apercu.style.display = /[*={}<]/.test(ta.value) ? '' : 'none';   // l'aperçu n'apparaît que s'il y a une mise en forme
+        }
+        ta.addEventListener('input', function () { fixer(obj, d.k, ta.value); maj(); change(); });
+        function entourer(avant, apres) {
+            var a = ta.selectionStart, b = ta.selectionEnd, sel = ta.value.slice(a, b) || 'texte';
+            ta.value = ta.value.slice(0, a) + avant + sel + apres + ta.value.slice(b);
+            ta.focus();
+            ta.setSelectionRange(a + avant.length, a + avant.length + sel.length);
+            ta.dispatchEvent(new Event('input'));
+        }
+        var barre = h('div', { class: 'barre-format' }, [
+            ['Gras', '**', '**', 'b'], ['Italique', '*', '*', 'i'], ['Surligné', '==', '==', 'm'], ['Murmure', '{{', '}}', 'u']
+        ].map(function (b) {
+            var bt = h('button', { type: 'button', class: 'fmt-' + b[3], title: b[0] + ' : ' + b[1] + 'texte' + b[2], text: b[0] });
+            bt.addEventListener('click', function () { entourer(b[1], b[2]); });
+            return bt;
+        }));
+        maj();
+        return h('div', { class: 'zone-texte' }, [barre, ta, apercu]);
     }
 
     function champImage(id, d, obj, change) {
@@ -515,7 +575,7 @@
             res.data.forEach(function (l) { lignes[l.cle] = l.valeur; });
             RUBRIQUES.forEach(function (r) {
                 // pas encore en base : on part des valeurs d'origine du site
-                var v = copie(lignes[r.cle] != null ? lignes[r.cle] : (window.DEFAUT[r.defaut] || (r.racineListe ? [] : {})));
+                var v = copie(lignes[r.cle] != null ? O.completer(lignes[r.cle], window.DEFAUT[r.defaut]) : (window.DEFAUT[r.defaut] || (r.racineListe ? [] : {})));
                 if (r.cle === 'relations') v = v.map(function (x) { var o = O.relation(x); delete o.dernier; return o; });
                 donnees[r.cle] = r.racineListe ? { liste: v } : v;
                 modifie[r.cle] = false;
